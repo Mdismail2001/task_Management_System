@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const AllTask = () => {
+const navigate = useNavigate();
   // Demo tasks
   const tasks = Array.from({ length: 10 }, (_, i) => ({
     id: i + 1,
@@ -43,7 +45,7 @@ const AllTask = () => {
           >
             <h2 className="text-xl font-semibold mb-2">{task.title}</h2>
             <p className="text-gray-600">Status: {task.status}</p>
-            <button className="mt-4 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+            <button onClick={()=> navigate('/home/admin/view')} className="mt-4 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
               View
             </button>
           </div>
