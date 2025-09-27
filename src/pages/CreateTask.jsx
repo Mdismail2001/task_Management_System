@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { X } from "lucide-react"; // close icon
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router";
 
 const CreateTask = () => {
   const [date, setDate] = useState(new Date());
   const [priority, setPriority] = useState("normal");
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -72,7 +74,7 @@ const CreateTask = () => {
       {file && <p className="text-sm text-gray-600 mb-4">Selected file: {file.name}</p>}
 
       {/* Submit Button */}
-      <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+      <button onClick={()=> navigate('/home/admin/all-task')} className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
         Create
       </button>
     </div>

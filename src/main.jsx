@@ -11,10 +11,11 @@ import ForgetPassword from './pages/ForgetPassword.jsx';
 import OtpSend from './pages/OtpSend.jsx';
 import Root from './components/Root/Root.jsx';
 import MainContainer from './components/HomeLayout/MainContainer';
-import MainContainer2 from './components/HomeLayout2/MainContainer2.jsx';
+import MainContainer2 from './components/HomeLayoutAdmin/MainContainer2.jsx';
 import ViewTask from './pages/ViewTask.jsx';
 import RootAdmin from './components/Root/RootAdmin.jsx';
 import CreateTask from './pages/CreateTask.jsx';
+import AllTask from './components/HomeLayoutAdmin/AllTask.jsx';
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,8 @@ const router = createBrowserRouter([
   path:'/home/admin', element:<RootAdmin></RootAdmin>,
   children:[
   {path:'',element: <MainContainer2></MainContainer2>},
-  {path:'create-task', element: <CreateTask></CreateTask>}
+  {path:'create-task', element: <CreateTask></CreateTask>},
+  {path:'all-task', element: <AllTask></AllTask>}
   ]
 },
 
