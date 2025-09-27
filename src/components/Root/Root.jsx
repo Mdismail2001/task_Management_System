@@ -4,17 +4,24 @@ import LeftNav from '../ShareComponent/LeftNav';
 import RightNav from '../ShareComponent/RightNav';
 
 const Root = () => {
-    return (
-        <div className='grid grid-cols-12'>
-            {/* left nav */}
-            <section className='col-span-3'><LeftNav></LeftNav></section>
+  return (
+    <div className="grid grid-cols-12 h-screen">
+      {/* Left nav */}
+      <section className="col-span-3 sticky top-0 h-screen overflow-y-auto">
+        <LeftNav />
+      </section>
 
-            <main className='col-span-6'><Outlet></Outlet></main>
+      {/* Main content */}
+      <main className="col-span-6 h-screen overflow-y-auto">
+        <Outlet />
+      </main>
 
-            {/* right nav */}
-            <section className='col-span-3'><RightNav></RightNav></section>
-        </div>
-    );
+      {/* Right nav */}
+      <section className="col-span-3 sticky top-0 h-screen overflow-y-auto">
+        <RightNav />
+      </section>
+    </div>
+  );
 };
 
 export default Root;

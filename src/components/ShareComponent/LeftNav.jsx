@@ -12,17 +12,17 @@ const LeftNav = () => {
         <div className="col-span-8 bg-white h-screen">
             <div className="flex-1  mt-20 ml-5">
             <h2 className="text-lg font-semibold py-5" >John Doe</h2>
-            <ul className="space-y-4 py-10 ">
-                <li className="flex">
-                <FaTachometerAlt /> Overview
+              <ul className="space-y-4 py-10">
+                <li className="flex items-center gap-3">
+                  <FaTachometerAlt /> <span>Overview</span>
                 </li>
-                <li className="flex">
-                <FaTasks /> Tasks
+                <li className="flex items-center gap-3">
+                  <FaTasks /> <span>Tasks</span>
                 </li>
-                <li className="flex">
-                <FaCog /> Settings
+                <li className="flex items-center gap-3">
+                  <FaCog /> <span>Settings</span>
                 </li>
-            </ul>
+              </ul>
             </div>
         </div>
 

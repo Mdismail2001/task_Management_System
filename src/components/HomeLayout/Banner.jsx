@@ -3,12 +3,12 @@ import { FaTimes } from "react-icons/fa";
 
 const Banner = () => {
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden shadow-lg">
+    <div className="relative  rounded-2xl overflow-hidden shadow-lg mx-6 ">
       {/* Background Image */}
       <img
         src="/src/assets/images/Frame 419.png"
         alt="Banner"
-        className="w-full h-40 md:h-56 lg:h-64 object-cover"
+        className="w-full h-20 md:h-30 lg:h-40 object-cover"
       />
 
       {/* Overlay Content */}
