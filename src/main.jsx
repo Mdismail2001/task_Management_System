@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ForgetPassword from './pages/ForgetPassword.jsx';
 import OtpSend from './pages/OtpSend.jsx';
+import CreateTask from './pages/CreateTask.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       {path:'/login',element:<LoginPage></LoginPage>},
       {path:'/forget-password', element:<ForgetPassword></ForgetPassword>},
       {path:'/otp', element:<OtpSend></OtpSend>},
+      {path:'/create-task', element:<CreateTask></CreateTask>},
     ]
 
   },
