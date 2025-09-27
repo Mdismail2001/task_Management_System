@@ -1,10 +1,10 @@
 import React from 'react';
-import { Outlet } from 'react-router';
 import LeftNav from '../ShareComponent/LeftNav';
 import RightNav from '../ShareComponent/RightNav';
 import Navbar from '../ShareComponent/Navbar';
+import { Outlet } from 'react-router';
 
-const Root = () => {
+const RootAdmin = () => {
   return (
     <div className="grid grid-cols-12 h-screen">
       {/* Left nav */}
@@ -33,4 +33,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default RootAdmin;

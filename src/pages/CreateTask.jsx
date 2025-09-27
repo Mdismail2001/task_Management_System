@@ -1,90 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
+import { X } from "lucide-react"; // close icon
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateTask = () => {
+  const [date, setDate] = useState(new Date());
+  const [priority, setPriority] = useState("normal");
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {/* Card container */}
-      <div className="bg-white shadow-lg rounded-2xl flex flex-col md:flex-row w-[90%] max-w-5xl overflow-hidden">
-        
-        {/* Left Side - Full Image with Centered Text */}
-        <div className="relative md:w-1/2 flex items-center justify-center">
-          <img
-            src="/src/assets/images/Frame 23.png"
-            alt="workspace illustration"
-            className="w-full h-full object-cover"
-          />
-          <h1 className="absolute text-3xl md:text-4xl font-bold text-white text-center drop-shadow-lg px-4">
-            Your Environment <br /> Your Will
-          </h1>
+    <div className="max-w-lg mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 relative">
+      {/* Top-right corner close button */}
+      <button className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition">
+        <X size={24} />
+      </button>
+
+      <h1 className="text-2xl font-bold mb-4">Create Task</h1>
+
+      {/* Task Name */}
+      <label className="block mb-2 font-medium">Task Name</label>
+      <input
+        type="text"
+        placeholder="Enter task name"
+        className="w-full border rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+
+      {/* Priority & Due Date Inline */}
+      <div className="flex gap-4 mb-4">
+        <div className="flex-1">
+          <label className="block mb-2 font-medium">Task Priority</label>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            <option value="low">Less Important</option>
+            <option value="normal">Normal</option>
+            <option value="high">Emergency</option>
+          </select>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="flex-1 p-10 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold text-gray-800 text-center md:text-left">
-            Create a Workspace
-          </h2>
-          <p className="text-sm text-gray-500 mt-2 text-center md:text-left">
-            Fill in the details to set up your workspace and get started.
-          </p>
-
-          <form className="mt-6 space-y-4">
-            {/* Workspace Title */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Workspace Title
-              </label>
-              <input
-                type="text"
-                placeholder="Enter workspace title"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[rgb(55,85,219)] focus:outline-none"
-              />
-            </div>
-
-            {/* Workspace Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <textarea
-                placeholder="Enter workspace description"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[rgb(55,85,219)] focus:outline-none"
-              ></textarea>
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category
-              </label>
-              <select className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[rgb(55,85,219)] focus:outline-none">
-                <option value="">Select category</option>
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="study">Study</option>
-              </select>
-            </div>
-
-            {/* Logo Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Workspace Logo (optional)
-              </label>
-              <input
-                type="file"
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[rgb(55,85,219)] focus:outline-none"
-              />
-            </div>
-
-            {/* Submit */}
-            <button
-              type="submit"
-              className="w-full bg-[rgb(55,85,219)] text-white py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
-            >
-              Next
-            </button>
-          </form>
+        <div className="flex-1">
+          <label className="block mb-2 font-medium">Due Date</label>
+          <DatePicker
+            selected={date}
+            onChange={(d) => setDate(d)}
+            dateFormat="yyyy-MM-dd"
+            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+          />
         </div>
       </div>
+
+      {/* Description */}
+      <label className="block mb-2 font-medium">Task Description</label>
+      <textarea
+        placeholder="Enter task details"
+        className="w-full border rounded-lg px-3 py-2 mb-4 h-24 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
+      ></textarea>
+
+      {/* File Upload */}
+      <label className="block mb-2 font-medium">Attach File</label>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="w-full border rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      {file && <p className="text-sm text-gray-600 mb-4">Selected file: {file.name}</p>}
+
+      {/* Submit Button */}
+      <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+        Create
+      </button>
     </div>
   );
 };

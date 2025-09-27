@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const TaskList = () => {
+
+  const navigate = useNavigate();
   // Demo tasks
   const tasks = [
     { id: "T-101", title: "Design Homepage", status: "Pending" },
@@ -47,7 +50,7 @@ const TaskList = () => {
           </h3>
 
           {/* Bottom: View Task */}
-          <button className="text-sm text-[rgb(55,85,219)] font-medium hover:underline self-start">
+          <button onClick={()=> navigate('/home/user/task-view') } className="text-sm text-[rgb(55,85,219)] font-medium hover:underline self-start">
             View Task
           </button>
         </div>
