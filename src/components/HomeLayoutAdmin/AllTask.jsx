@@ -15,7 +15,7 @@ const navigate = useNavigate();
       {/* Header + Button */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Tasks</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        <button onClick={()=> navigate('/home/admin/create-task')} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
           Create Task
         </button>
       </div>
