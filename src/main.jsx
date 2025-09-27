@@ -7,6 +7,8 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import RegisterPage from './pages/RegisterPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import ForgetPassword from './pages/ForgetPassword.jsx';
+import OtpSend from './pages/OtpSend.jsx';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +16,9 @@ const router = createBrowserRouter([
     element:<App></App>,
     children:[
       {path:'/register',element:<RegisterPage></RegisterPage>},
-      {path:'/login',element:<LoginPage></LoginPage>}
+      {path:'/login',element:<LoginPage></LoginPage>},
+      {path:'/forget-password', element:<ForgetPassword></ForgetPassword>},
+      {path:'/otp', element:<OtpSend></OtpSend>},
     ]
 
   },
