@@ -13,6 +13,7 @@ import CreateTask from './pages/CreateTask.jsx';
 import Root from './components/Root/Root.jsx';
 import MainContainer from './components/HomeLayout/MainContainer';
 import MainContainer2 from './components/HomeLayout2/MainContainer2.jsx';
+import ViewTask from './pages/ViewTask.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,20 +24,22 @@ const router = createBrowserRouter([
       {path:'/login',element:<LoginPage></LoginPage>},
       {path:'/forget-password', element:<ForgetPassword></ForgetPassword>},
       {path:'/otp', element:<OtpSend></OtpSend>},
+
       {path:'/create-task', element:<CreateTask></CreateTask>},
     ]
   },
 // home page layout for personal
 {
-  path:'/home/personal', element:<Root></Root>,
+  path:'/home/user', element:<Root></Root>,
   children:[
   {path:'',element: <MainContainer></MainContainer>},
+  {path:'t-view', element:<ViewTask></ViewTask>},
   ]
 },
 
 // home page layout for crating task
 {
-  path:'/home/create-task', element:<Root></Root>,
+  path:'/home/admin', element:<Root></Root>,
   children:[
   {path:'',element: <MainContainer2></MainContainer2>},
   ]
