@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import LeftNav from './LeftNav';
-import RightNav from './RightNav';
+import LeftNav from '../ShareComponent/LeftNav';
+import RightNav from '../ShareComponent/RightNav';
 
 const Root = () => {
     return (

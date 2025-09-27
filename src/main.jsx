@@ -10,8 +10,9 @@ import LoginPage from './pages/LoginPage.jsx';
 import ForgetPassword from './pages/ForgetPassword.jsx';
 import OtpSend from './pages/OtpSend.jsx';
 import CreateTask from './pages/CreateTask.jsx';
-import Root from './components/HomeLayout/Root.jsx';
-import MainContainer from './components/HomeLayout/MainContainer.jsx';
+import Root from './components/Root/Root.jsx';
+import MainContainer from './components/HomeLayout/MainContainer';
+import MainContainer2 from './components/HomeLayout2/MainContainer2.jsx';
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
 {
   path:'/home/create-task', element:<Root></Root>,
   children:[
-  {path:'',element: <h1>for admin</h1>},
+  {path:'',element: <MainContainer2></MainContainer2>},
   ]
 },
 
