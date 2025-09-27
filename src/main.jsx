@@ -19,6 +19,7 @@ import AllTask from './components/HomeLayoutAdmin/AllTask.jsx';
 import View from './components/HomeLayoutAdmin/View.jsx';
 import { el } from '../node_modules/date-fns/locale/el';
 import Edit from './components/HomeLayoutAdmin/Edit.jsx';
+import Settings from './components/ShareComponent/Settings.jsx';
 
 const router = createBrowserRouter([
   {
@@ -49,9 +50,8 @@ const router = createBrowserRouter([
   {path:'create-task', element: <CreateTask></CreateTask>},
   {path:'all-task', element: <AllTask></AllTask>},
   {path:'view' , element:<View></View>},
-  {path:'edit', element: <Edit>
-    
-  </Edit>}
+  {path:'edit', element: <Edit></Edit>},
+  {path:'settings', element:<Settings>s</Settings>}
   ]
 },
 
