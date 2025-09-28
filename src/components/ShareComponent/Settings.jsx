@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { User, Bell, Mail, Check, X as XIcon } from "lucide-react"; // icons
+import { useNavigate } from "react-router";
 
 const Settings = () => {
   const [fullName, setFullName] = useState("John Doe");
@@ -9,6 +10,7 @@ const Settings = () => {
   const [desktopLevel, setDesktopLevel] = useState("Normal");
   const [emailNotif, setEmailNotif] = useState(false);
   const [emailLevel, setEmailLevel] = useState("Critical");
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-8">
@@ -61,7 +63,7 @@ const Settings = () => {
 
           {/* Submit Button */}
           <div className="flex justify-end">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            <button onClick={()=> navigate('/home/admin/profile-edit')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
               Edit
             </button>
           </div>
