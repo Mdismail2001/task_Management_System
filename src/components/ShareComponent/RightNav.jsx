@@ -2,14 +2,16 @@ import React, { useContext, useState } from "react";
 import { FaCalendarAlt, FaBell } from "react-icons/fa";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { AuthContext } from "../Provider/AuthProvider";
+import { AuthContext } from "../Provider/AuthProvider"; 
 
-const RightNav = () => {
+
+const RightNav = ({  setShowPopup, userImage }) => {
   const [date, setDate] = useState(new Date());
   const [isActive, setIsActive] = useState(true); // status light
-  const [userImage, setUserImage] = useState();
   const {user} = useContext(AuthContext);
+
   // console.log(user)
+
 
   return (
     <div className=" bg-white shadow-lg flex flex-col items-center p-6 min-h-screen">
@@ -17,7 +19,7 @@ const RightNav = () => {
       <div className="relative flex flex-col items-center">
         <img
           className="w-20 h-20 rounded-xl cursor-pointer"
-          src="/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg"
+          src={userImage}
           alt="User"
         />
         <span
@@ -29,7 +31,7 @@ const RightNav = () => {
         <h2 className="mt-4 text-lg font-semibold text-gray-800">{user.name}</h2>
         <p className="text-sm text-gray-500">john.doe@example.com</p>
 
-        <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
+        <button onClick={() => setShowPopup(true)} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
           My Profile
         </button>
       </div>
