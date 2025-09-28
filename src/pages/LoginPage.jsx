@@ -21,7 +21,7 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="you@example.com"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -34,7 +34,7 @@ const LoginPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <button
                   type="button"
@@ -101,7 +101,7 @@ const LoginPage = () => {
         {/* Mobile App Buttons */}
         <div className="relative z-10 w-full text-center space-y-2">
           <p className="text-sm">Get the Mobile App</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4" >
             <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
               Download
             </button>

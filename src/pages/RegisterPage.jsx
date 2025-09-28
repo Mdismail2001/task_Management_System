@@ -5,6 +5,21 @@ import { Link } from "react-router";
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [role, setRole] = useState("user"); // State for role selection
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+      fullName: formData.get("fullName"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirmPassword"),
+      role: role,
+    };
+    console.log("Form Data:", data);
+    // Add your registration logic here (API call, validation, etc.)
+  };
 
   return (
     <div className="grid grid-cols-12 h-screen">
@@ -47,7 +62,10 @@ const RegisterPage = () => {
       <div className="col-span-12 lg:col-span-6 flex justify-center items-center bg-gray-50 relative">
         {/* Login Button (top-right corner of form side) */}
         <div className="absolute top-6 right-6">
-          <Link to ="/auth/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700">
+          <Link
+            to="/auth/login"
+            className="bg-blue-100 text-black px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700"
+          >
             Login
           </Link>
         </div>
@@ -55,16 +73,18 @@ const RegisterPage = () => {
         <div className="w-full max-w-sm p-8">
           <h2 className="text-2xl font-bold mb-6">Create Account</h2>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium mb-1">
                 Full Name
               </label>
               <input
+                name="fullName"
                 type="text"
                 placeholder="John Doe"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 bg-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
@@ -74,9 +94,11 @@ const RegisterPage = () => {
                 Email Address
               </label>
               <input
+                name="email"
                 type="email"
                 placeholder="you@example.com"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 bg-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
@@ -87,9 +109,11 @@ const RegisterPage = () => {
               </label>
               <div className="relative">
                 <input
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full p-3 bg-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  required
                 />
                 <button
                   type="button"
@@ -108,9 +132,11 @@ const RegisterPage = () => {
               </label>
               <div className="relative">
                 <input
+                  name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full p-3 bg-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  required
                 />
                 <button
                   type="button"
@@ -122,6 +148,20 @@ const RegisterPage = () => {
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
+            </div>
+
+            {/* Role */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Role</label>
+              <select
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full p-3 bg-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
 
             {/* Register Button */}

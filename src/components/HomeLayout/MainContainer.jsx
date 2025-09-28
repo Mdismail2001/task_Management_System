@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import Banner from "./Banner";
-import TaskList from "./TaskList";
 
 const MainContainer = () => {
   const navigate = useNavigate();
