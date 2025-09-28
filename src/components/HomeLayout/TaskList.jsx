@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import Banner from "./Banner";
 
 const TaskList = () => {
 
@@ -22,10 +23,13 @@ const TaskList = () => {
   ];
 
   return (
+    <div>
+      {/* <Banner></Banner> */}
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tasks.map((task) => (
+      {tasks.map((task ,index) => (
         <div
-          key={task.id}
+          task = {task}
+          key={index}
           className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between h-40 border border-gray-200"
         >
           {/* Top Row: Task ID + Status */}
@@ -55,6 +59,7 @@ const TaskList = () => {
           </button>
         </div>
       ))}
+    </div>
     </div>
   );
 };

@@ -21,6 +21,8 @@ import { el } from '../node_modules/date-fns/locale/el';
 import Edit from './components/HomeLayoutAdmin/Edit.jsx';
 import Settings from './components/ShareComponent/Settings.jsx';
 import ProfileEdit from './components/ShareComponent/ProfileEdit.jsx';
+import { AuthProvider } from './components/Provider/AuthProvider.jsx';
+import TaskList from './components/HomeLayout/TaskList.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,7 +33,6 @@ const router = createBrowserRouter([
       {path:'/login',element:<LoginPage></LoginPage>},
       {path:'/forget-password', element:<ForgetPassword></ForgetPassword>},
       {path:'/otp', element:<OtpSend></OtpSend>},
-
     ]
   },
 // home page layout for personal
@@ -39,11 +40,14 @@ const router = createBrowserRouter([
   path:'/home/user', element:<Root></Root>,
   children:[
   {path:'',element: <MainContainer></MainContainer>},
+  {path:'task', element:<TaskList></TaskList>},
   {path:'task-view', element:<ViewTask></ViewTask>},
+  {path:'settings', element:<Settings></Settings>},
+  {path:'profile-edit', element: <ProfileEdit></ProfileEdit>}
   ]
 },
 
-// home page layout for crating task
+// home page layout for admin
 {
   path:'/home/admin', element:<RootAdmin></RootAdmin>,
   children:[
@@ -52,7 +56,7 @@ const router = createBrowserRouter([
   {path:'all-task', element: <AllTask></AllTask>},
   {path:'view' , element:<View></View>},
   {path:'edit', element: <Edit></Edit>},
-  {path:'settings', element:<Settings>s</Settings>},
+  {path:'settings', element:<Settings></Settings>},
   {path:'profile-edit', element: <ProfileEdit></ProfileEdit>}
   ]
 },
@@ -63,7 +67,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}>
-    </RouterProvider>
-  </StrictMode>,
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
+  </StrictMode>
 )
