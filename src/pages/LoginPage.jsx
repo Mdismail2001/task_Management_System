@@ -1,90 +1,117 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link } from "react-router-dom"; // ✅ Correct import
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left Section with Form */}
-      <div className="flex flex-col justify-start items-center w-full lg:w-1/2 p-8 relative">
-        {/* Login button top-left */}
-
-        {/* Form card with fixed size */}
-        <div className="bg-white shadow-lg rounded-2xl p-8 mt-16 w-[384px] h-[569px]">
-          <h2 className="text-2xl font-semibold mb-6 text-center">
-            Welcome Back
-          </h2>
+    <div className="grid grid-cols-12 h-screen">
+      {/* Left Side - Login Form */}
+      <div className="col-span-12 lg:col-span-6 flex justify-center items-center bg-gray-50">
+        <div className="w-full max-w-sm p-8">
+          <h2 className="text-2xl font-bold mb-6">Welcome Back</h2>
 
           <form className="space-y-4">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
+              <label className="block text-sm font-medium mb-1">
+                Email Address
+              </label>
               <input
                 type="email"
-                className="w-full input input-bordered"
-                placeholder="Enter your email"
+                placeholder="you@example.com"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             {/* Password with Eye Icon */}
             <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
+              <label className="block text-sm font-medium mb-1">
+                Enter Your Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="w-full input input-bordered pr-10"
-                  placeholder="Enter your password"
+                  placeholder="••••••••"
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
                   onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
             </div>
 
-            {/* Button */}
-            <button className="w-full btn border-0 mt-4 bg-[rgb(55,85,219)] text-white rounded-2xl">
-              Login
+            {/* Remember Me + Forgot Password */}
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="w-4 h-4" />
+                Keep me signed in
+              </label>
+              <a href="#" className="text-blue-600 hover:underline">
+                Forgot Password?
+              </a>
+            </div>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Log In
             </button>
           </form>
-          <Link to="/forget-password" className="text-[rgb(55,85,219)]">Forget Password?</Link>
         </div>
       </div>
 
-      {/* Right Section with Image & Text */}
-      <div className="hidden lg:flex flex-col justify-center items-center w-1/2 p-10 relative">
-        <div className="relative flex justify-center items-center">
-          {/* Image with fixed size */}
-          <img
-            src="/src/assets/images/Frame 23.png"
-            alt="Productivity"
-            className="w-[688px] h-[984px] object-cover rotate-180"
-          />
+      {/* Right Side - Rotated Background Image */}
+      <div className="col-span-12 lg:col-span-6 relative flex flex-col justify-between items-center text-white p-8 overflow-hidden">
+        {/* Rotated background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center transform -rotate-180"
+          style={{
+            backgroundImage: "url('/src/assets/images/Frame 23.png')",
+          }}
+        ></div>
 
-          {/* Centered Text on Image */}
-          <h1 className="absolute text-4xl font-bold leading-tight text-center text-white drop-shadow-lg">
-            Take your <br /> productivity to the <br /> next level
-          </h1>
+        {/* Overlay to improve readability */}
+        <div className="absolute inset-0 bg-black/30"></div>
 
-          {/* Bottom Buttons + Text */}
-          <div className="absolute bottom-6 flex flex-col items-center gap-3 w-full">
-            <div className="flex gap-4">
-              <button className="px-6 py-2 rounded-lg bg-yellow-400 text-black font-semibold shadow-md hover:bg-yellow-500">
-                Button 1
-              </button>
-              <button className="px-6 py-2 rounded-lg bg-yellow-400 text-black font-semibold shadow-md hover:bg-yellow-500">
-                Button 2
-              </button>
-            </div>
-            <p className="text-sm text-white mt-2">
-              © 2021 | All Rights Reserved
-            </p>
+        {/* Create Account Button (top-right) */}
+        <div className="absolute top-6 right-6 z-10">
+          <Link
+            to="/auth/register"
+            className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium shadow hover:bg-gray-100"
+          >
+            Create Account
+          </Link>
+        </div>
+
+        {/* Centered Text */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
+          <h2 className="text-3xl font-bold max-w-sm">
+            Take your productivity to the next level.
+          </h2>
+        </div>
+
+        {/* Mobile App Buttons */}
+        <div className="relative z-10 w-full text-center space-y-2">
+          <p className="text-sm">Get the Mobile App</p>
+          <div className="flex justify-center gap-4">
+            <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
+              Download
+            </button>
+            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100">
+              Download
+            </button>
           </div>
+          <p className="mt-4 text-xs">
+            Copyright 2021 | All Rights Reserved
+          </p>
         </div>
       </div>
     </div>

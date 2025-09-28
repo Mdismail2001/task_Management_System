@@ -4,99 +4,132 @@ import { Link } from "react-router";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left Section with Image & Text */}
-      <div className="hidden lg:flex flex-col justify-center items-center w-1/2 p-10 relative">
-        <div className="relative flex justify-center items-center">
-          {/* Image with fixed size */}
-          <img
-            src="/src/assets/images/Frame 23.png"
-            alt="Productivity"
-            className="w-[688px] h-[984px] object-cover"
-          />
+    <div className="grid grid-cols-12 h-screen">
+      {/* Left Side - Background Image */}
+      <div className="col-span-12 lg:col-span-6 relative flex flex-col justify-between items-center text-white p-8 overflow-hidden">
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('/src/assets/images/Frame 23.png')",
+          }}
+        ></div>
 
-          {/* Centered Text on Image */}
-          <h1 className="absolute text-4xl font-bold leading-tight text-center text-white drop-shadow-lg">
-            Take your <br /> productivity to the <br /> next level
-          </h1>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/30"></div>
 
-          {/* Bottom Buttons + Text */}
-          <div className="absolute bottom-6 flex flex-col items-center gap-3 w-full">
-            <div className="flex gap-4">
-              <button className="px-6 py-2 rounded-lg bg-yellow-400 text-black font-semibold shadow-md hover:bg-yellow-500">
-                Button 1
-              </button>
-              <button className="px-6 py-2 rounded-lg bg-yellow-400 text-black font-semibold shadow-md hover:bg-yellow-500">
-                Button 2
-              </button>
-            </div>
-            <p className="text-sm text-white mt-2">
-              © 2021 | All Rights Reserved
-            </p>
+        {/* Centered Text */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
+          <h2 className="text-3xl font-bold max-w-sm">
+            Join us and unlock new possibilities.
+          </h2>
+        </div>
+
+        {/* Mobile App Buttons */}
+        <div className="relative z-10 w-full text-center space-y-2">
+          <p className="text-sm">Get the Mobile App</p>
+          <div className="flex justify-center gap-4">
+            <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
+              Download
+            </button>
+            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100">
+              Download
+            </button>
           </div>
+          <p className="mt-4 text-xs">Copyright 2021 | All Rights Reserved</p>
         </div>
       </div>
 
-      {/* Right Section with Form */}
-      <div className="flex flex-col justify-start items-center w-full lg:w-1/2 p-8 relative">
-        {/* Login button top-right */}
+      {/* Right Side - Register Form */}
+      <div className="col-span-12 lg:col-span-6 flex justify-center items-center bg-gray-50 relative">
+        {/* Login Button (top-right corner of form side) */}
         <div className="absolute top-6 right-6">
-          <Link to ='/login' className="btn border-[rgb(55,85,219)] rounded-2xl">
+          <Link to ="/auth/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700">
             Login
           </Link>
         </div>
 
-        {/* Form card with fixed size */}
-        <div className="bg-white shadow-lg rounded-2xl p-8 mt-16 w-[384px] h-[569px]">
-          <h2 className="text-2xl font-semibold mb-6 text-center">
-            Create an Account
-          </h2>
+        <div className="w-full max-w-sm p-8">
+          <h2 className="text-2xl font-bold mb-6">Create Account</h2>
 
           <form className="space-y-4">
-            {/* Name */}
+            {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium mb-1">Name</label>
+              <label className="block text-sm font-medium mb-1">
+                Full Name
+              </label>
               <input
                 type="text"
-                className="w-full input input-bordered"
-                placeholder="Enter your name"
+                placeholder="John Doe"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
+              <label className="block text-sm font-medium mb-1">
+                Email Address
+              </label>
               <input
                 type="email"
-                className="w-full input input-bordered"
-                placeholder="Enter your email"
+                placeholder="you@example.com"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            {/* Password with Eye Icon */}
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
+              <label className="block text-sm font-medium mb-1">
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="w-full input input-bordered pr-10"
-                  placeholder="Enter your password"
+                  placeholder="••••••••"
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
                   onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
             </div>
 
-            {/* Button */}
-            <button className="w-full btn border-0 mt-4 bg-[rgb(55,85,219)] text-white rounded-2xl">
-              Create Account
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmPassword(!showConfirmPassword)
+                  }
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+            </div>
+
+            {/* Register Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Sign Up
             </button>
           </form>
         </div>

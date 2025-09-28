@@ -1,15 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import { Outlet } from 'react-router'
+import { Link, Outlet } from "react-router-dom";
+import { FaTasks } from "react-icons/fa";
 
 function App() {
-
   return (
-    <>
-    <h1 className='text-amber-300'>task management</h1>
-    <Outlet></Outlet>
-    </>
-  )
+    <div>
+        <Outlet />
+    </div>
+  );
 }
 
-export default App
+export default App;
