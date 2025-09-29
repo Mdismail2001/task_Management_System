@@ -1,56 +1,70 @@
 import React, { useContext } from "react";
-import { FaTasks,  FaCog, FaTachometerAlt, } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { FaTasks, FaCog } from "react-icons/fa";
+import { MdOutlineGridView } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const LeftNav = () => {
-  const {user} = useContext(AuthContext);
-  // console.log(user.role);
+  const { user } = useContext(AuthContext);
+
+  // Role-based routes
+  const routes =
+    user?.role === "user"
+      ? [
+          { to: "/home/user", label: "Overview", icon: MdOutlineGridView, exact: true },
+          { to: "/home/user/task", label: "Tasks", icon: FaTasks },
+          { to: "/home/user/settings", label: "Settings", icon: FaCog },
+        ]
+      : [
+          { to: "/home/admin", label: "Overview", icon: MdOutlineGridView, exact: true },
+          { to: "/home/admin/all-task", label: "Tasks", icon: FaTasks },
+          { to: "/home/admin/settings", label: "Settings", icon: FaCog },
+        ];
+
   return (
-    <div className="grid grid-cols-12  bg-white shadow-lg ">
-        
-        <div className="col-span-3 bg-[rgb(55,85,219)] h-screen flex  justify-center">
-          <div className="border-2 border-[#fabc37] items-center rounded-lg mt-20 p-1 inline-flex h-10 w-10">
-          <img 
-            src="/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg" 
-            alt="Profile" 
-            className="w-7 h-7 object-cover rounded-sm "
+    <div className="grid grid-cols-12 bg-white shadow-lg">
+      {/* Profile Section */}
+      <div className="col-span-3 bg-[rgb(55,85,219)] h-screen flex justify-center">
+        <div className="border-2 border-[#fabc37] items-center rounded-lg mt-20 p-1 inline-flex h-10 w-10">
+          <img
+            src="/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg"
+            alt="Profile"
+            className="w-7 h-7 object-cover rounded-sm"
           />
-          </div>
         </div>
+      </div>
 
-        <div className="col-span-9 bg-white h-screen">
-            <div className="flex-1  mt-20 ml-5">
-            <h2 className="text-lg font-semibold py-3" >{ user?.name}</h2>
-              <ul className="space-y-4 py-10">
-                <li className="flex items-center gap-3">
-                  <FaTachometerAlt />
-                  {user?.role === "user" ? (
-                  <Link to="/home/user">Overview</Link>
-                  ) : (
-                  <Link to="/home/admin">Overview</Link>
-                  )}               
-                </li>
+      {/* Navigation Section */}
+      <div className="col-span-9 bg-white h-screen">
+        <div className="flex-1 mt-20 ml-5">
+          <h2 className="text-xl text-blue-900 font-bold py-2">My Space</h2>
+          <p className="text-semibold text-gray-500">Workspace Title</p>
 
-                <li className="flex items-center gap-3">
-                  <FaTasks /> 
-                  {user?.role === "user"? 
-                  (<Link to ="/home/user/task">Tasks</Link>)
-                  :(<Link to ="/home/admin/all-task" >Tasks</Link>)
-                  }
+          <ul className="space-y-6 py-10 text-xl relative">
+            {routes.map((route) => {
+              const Icon = route.icon;
+              return (
+                <li key={route.to}>
+                  <NavLink
+                    to={route.to}
+                    end={route.exact}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 transition ${
+                        isActive
+                          ? "text-blue-600 font-bold"
+                          : "text-gray-500"
+                      }`
+                    }
+                  >
+                    <Icon className="size-5 text-blue-600" />
+                    <span>{route.label}</span>
+                  </NavLink>
                 </li>
-
-                <li className="flex items-center gap-3">
-                  <FaCog />
-                  {user?.role ==="user"? 
-                  (<Link to="/home/user/settings" >Settings</Link>):
-                  (<Link to="/home/admin/settings" >Settings</Link>)}
-                   
-                </li>
-              </ul>
-            </div>
+              );
+            })}
+          </ul>
         </div>
-
+      </div>
     </div>
   );
 };

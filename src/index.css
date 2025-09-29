@@ -2,3 +2,12 @@
 @plugin "daisyui" {
   themes: false;
 }
+
+/* global.css */
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+}

@@ -15,7 +15,7 @@ const Root = () => {
       {/* Main content */}
       <main className="col-span-7 h-screen overflow-y-auto bg-[#f5f7fc]">
         {/* Sticky Navbar */}
-        <header className="sticky top-0 z-50 bg-[#f5f7fc] shadow-sm">
+        <header className="sticky top-0 z-50 bg-[#f5f7fc] ">
           <Navbar />
         </header>
 

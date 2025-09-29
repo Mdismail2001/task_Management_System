@@ -1,21 +1,15 @@
 import React, { useContext, useState } from "react";
-import { FaCalendarAlt, FaBell } from "react-icons/fa";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { AuthContext } from "../Provider/AuthProvider"; 
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { AuthContext } from "../Provider/AuthProvider";
 
-
-const RightNav = ({  setShowPopup, userImage }) => {
+const RightNav = ({ setShowPopup, userImage }) => {
   const [date, setDate] = useState(new Date());
-  const [isActive, setIsActive] = useState(true); // status light
-  const {user} = useContext(AuthContext);
-  // console.log(user)
-
-  // console.log(user)
-
+  const [isActive, setIsActive] = useState(true);
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className=" bg-white shadow-lg flex flex-col items-center p-6 min-h-screen">
+    <div className="  flex flex-col items-center -2 min-h-screen fixed  p-2  mt-4">
       {/* User Profile */}
       <div className="relative flex flex-col items-center">
         <img
@@ -24,39 +18,44 @@ const RightNav = ({  setShowPopup, userImage }) => {
           alt="User"
         />
         <span
-          className={`absolute top-0 right-9 w-4 h-4 rounded-full border-2 border-white ${
+          className={`absolute top-0 right-5 w-4 h-4 rounded-full border-2 border-white ${
             isActive ? "bg-green-500" : "bg-gray-400"
           }`}
         ></span>
 
-        <h2 className="mt-4 text-lg font-semibold text-gray-800">{user?.username}</h2>
+        <h2 className="mt-4 text-lg font-semibold text-gray-800">
+          {user?.username}
+        </h2>
         <p className="text-sm text-gray-500">{user?.email}</p>
 
-        <button onClick={() => setShowPopup(true)} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
+        <button
+          onClick={() => setShowPopup(true)}
+          className="mt-4 px-4 py-2 bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+        >
           My Profile
         </button>
       </div>
 
       {/* Divider */}
-      <hr className="w-full my-6 border-gray-200" />
+      {/* <hr className="w-full my-6 border-gray-200" /> */}
 
-      {/* Quick Actions */}
-      <div className="w-full flex flex-col items-center gap-4">
-        <div className="flex justify-between w-full ">
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
-            <FaCalendarAlt className="text-blue-600" /> Calendar
+          <div className=" flex flex-col items-center  bg-[#f5f7fc] py-2 rounded-xl mt-5">
+        <div className="flex justify-between w-full p-2">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#3755db] text-white rounded-lg hover:bg-blue-600 transition">
+            Calendar
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
-            <FaBell className="text-yellow-500" /> Reminder
+          <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+            Reminder
           </button>
         </div>
 
         {/* Calendar */}
-        <div className="w-full">
-          <Calendar
-            onChange={setDate}
-            value={date}
-            className="rounded-lg overflow-hidden shadow-inner"
+        <div className="w-full ">
+          <DayPicker
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="bg-transparent p-2 rounded-lg"
           />
         </div>
       </div>

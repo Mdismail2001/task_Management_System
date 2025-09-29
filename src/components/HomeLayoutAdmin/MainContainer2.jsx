@@ -8,8 +8,8 @@ const MainContainer2 = () => {
     <div className="relative h-screen">
       {/* Top Left */}
       <div className="absolute top-6 left-6">
-        <h1 className="text-2xl font-bold text-gray-800">Task</h1>
-        <p className="text-gray-500">Your task overview</p>
+        <h1 className="text-2xl font-bold text-blue-900">Task</h1>
+        <p className="text-gray-400">Your task overview</p>
       </div>
 
       {/* Center Content */}
@@ -23,7 +23,7 @@ const MainContainer2 = () => {
         <p className="text-gray-500 mb-4">Create your first task to get started</p>
         <button
         onClick={() => navigate('/home/admin/create-task')}
-        className="px-6 py-3 bg-[rgb(55,85,219)] text-white rounded-lg shadow-md hover:bg-blue-700 transition"
+        className="px-4 py-3 bg-[#3755db] text-white  rounded-lg shadow-md hover:bg-blue-600 transition"
         >
           Create Task
         </button>

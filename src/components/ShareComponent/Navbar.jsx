@@ -1,24 +1,24 @@
 import React from "react";
-import { FaBell } from "react-icons/fa";
+import { IoNotificationsOutline, IoSearchOutline } from "react-icons/io5";
 
 const Navbar = () => {
   return (
-    <div className="w-full px-6 py-3 flex items-center justify-between ">
+    <div className="w-full px-6 py-3 flex items-center justify-between">
       {/* Search Bar */}
-      <div className="flex items-center w-1/2">
+      <div className="relative flex items-center w-1/2">
         <input
           type="search"
           placeholder="Search..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgb(55,85,219)]"
+          className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgb(55,85,219)]"
         />
+        <IoSearchOutline className="absolute right-3 text-gray-400 text-lg cursor-pointer" />
       </div>
 
       {/* Notification Icon */}
       <div className="flex items-center gap-4">
         <button className="relative">
-          <FaBell className="text-gray-600 text-xl hover:text-[rgb(55,85,219)] transition" />
+          <IoNotificationsOutline className=" text-xl text-[rgb(55,85,219)] " />
           {/* Notification Dot */}
-          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
       </div>
     </div>

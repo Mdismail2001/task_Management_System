@@ -40,7 +40,7 @@ const RootAdmin = () => {
         </section>
 
         <main className="col-span-7 h-screen overflow-y-auto bg-[#f5f7fc]">
-          <header className="sticky top-0 z-50 bg-[#f5f7fc] shadow-sm">
+          <header className="col-span-7 sticky top-0 z-50 bg-[#f5f7fc] ">
             <Navbar />
           </header>
           <div className="p-4">
