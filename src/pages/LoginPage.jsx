@@ -1,9 +1,51 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom"; // ✅ Correct import
+import { Link, useNavigate } from "react-router-dom"; // ✅ Correct import
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const login = async (e) => {
+    try {
+      e.preventDefault();
+      const username = e.target.username.value;
+      const password = e.target.password.value;
+
+      const res = await fetch("https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!res.ok ) throw new Error("Login failed");
+
+      const data = await res.json();
+      console.log(data);
+
+      // Save to storage
+      localStorage.setItem("user", JSON.stringify(data.user));
+      sessionStorage.setItem("token", data.token);
+
+      // Update state
+      // setUser(data.user);
+      // setToken(data.token);
+      
+      navigate('/home/admin');
+      // return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
+  // Logout function
+  // const logout = () => {
+  //   localStorage.removeItem("user");
+  //   sessionStorage.removeItem("token");
+  //   setUser(null);
+  //   setToken(null);
+  // };
 
   return (
     <div className="grid grid-cols-12 h-screen">
@@ -12,15 +54,18 @@ const LoginPage = () => {
         <div className="w-full max-w-sm p-8">
           <h2 className="text-2xl font-bold mb-6">Welcome Back</h2>
 
-          <form className="space-y-4">
+          <form className="space-y-4"               
+          onSubmit={login}
+          >
             {/* Email */}
             <div>
               <label className="block text-sm font-medium mb-1">
-                Email Address
+                User Name
               </label>
               <input
-                type="email"
-                placeholder="you@example.com"
+                type="text"
+                name="username"
+                placeholder="user name"
                 className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -33,6 +78,7 @@ const LoginPage = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
                   placeholder="••••••••"
                   className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />

@@ -9,6 +9,7 @@ const RightNav = ({  setShowPopup, userImage }) => {
   const [date, setDate] = useState(new Date());
   const [isActive, setIsActive] = useState(true); // status light
   const {user} = useContext(AuthContext);
+  // console.log(user)
 
   // console.log(user)
 
@@ -28,8 +29,8 @@ const RightNav = ({  setShowPopup, userImage }) => {
           }`}
         ></span>
 
-        <h2 className="mt-4 text-lg font-semibold text-gray-800">{user.name}</h2>
-        <p className="text-sm text-gray-500">john.doe@example.com</p>
+        <h2 className="mt-4 text-lg font-semibold text-gray-800">{user?.username}</h2>
+        <p className="text-sm text-gray-500">{user?.email}</p>
 
         <button onClick={() => setShowPopup(true)} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
           My Profile

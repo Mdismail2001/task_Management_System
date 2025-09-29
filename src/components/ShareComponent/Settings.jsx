@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { User, Bell, Mail, Check, X as XIcon } from "lucide-react"; // icons
 import { useNavigate } from "react-router";
+import { AuthContext } from '../Provider/AuthProvider';
 
 const Settings = () => {
-  const [fullName, setFullName] = useState("John Doe");
-  const [email, setEmail] = useState("johndoe@example.com");
+  const [fullName, setFullName] = useState(null);
+  const [email, setEmail] = useState(null);
   const [password, setPassword] = useState("");
   const [desktopNotif, setDesktopNotif] = useState(true);
   const [desktopLevel, setDesktopLevel] = useState("Normal");
   const [emailNotif, setEmailNotif] = useState(false);
   const [emailLevel, setEmailLevel] = useState("Critical");
   const navigate = useNavigate();
+  const {user} = useContext(AuthContext);
+  console.log(user)
+
+  const logout = () => {
+    // Remove user and token from storage
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+
+    // Redirect to login page
+    navigate("/auth/login");
+  };
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-8">
       {/* Header: Title + Logout */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
           Log Out
         </button>
       </div>
@@ -31,7 +44,7 @@ const Settings = () => {
             <User className="mr-2 text-gray-400" />
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder={user.username}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="w-full outline-none"
@@ -43,7 +56,7 @@ const Settings = () => {
             <Mail className="mr-2 text-gray-400" />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={user.email}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full outline-none"
