@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { User, Bell, Mail, Eye, EyeOff } from "lucide-react"; // added Eye, EyeOff
+import { User, Bell, Mail, Eye, EyeOff } from "lucide-react"; 
 import { useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
@@ -7,17 +7,12 @@ const Settings = () => {
   const [fullName, setFullName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // state for toggle
+  const [showPassword, setShowPassword] = useState(false);
   const [desktopNotif, setDesktopNotif] = useState(true);
   const [emailNotif, setEmailNotif] = useState(false);
+
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-
-  const logout = () => {
-    localStorage.removeItem("user");
-    sessionStorage.removeItem("token");
-    navigate("/auth/login");
-  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-8">
@@ -25,7 +20,7 @@ const Settings = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Settings</h1>
         <button
-          onClick={logout}
+          onClick={() => navigate("/home/admin/logout")}
           className="bg-[#b8001f] text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
         >
           Log Out
@@ -41,8 +36,8 @@ const Settings = () => {
             <User className="mr-2 text-gray-400" />
             <input
               type="text"
-              placeholder={user.username}
-              value={fullName}
+              placeholder={user?.username || "Full Name"}
+              value={fullName ?? ""}
               onChange={(e) => setFullName(e.target.value)}
               className="w-full outline-none"
             />
@@ -53,14 +48,14 @@ const Settings = () => {
             <Mail className="mr-2 text-gray-400" />
             <input
               type="email"
-              placeholder={user.email}
-              value={email}
+              placeholder={user?.email || "Email"}
+              value={email ?? ""}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full outline-none"
             />
           </div>
 
-          {/* Password with eye toggle */}
+          {/* Password with toggle */}
           <div className="flex items-center shadow rounded-lg px-3 py-2 relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -78,11 +73,12 @@ const Settings = () => {
             </button>
           </div>
 
-          {/* Submit */}
+          {/* Edit button */}
           <div className="flex justify-end">
             <button
+              type="button"
               onClick={() => navigate("/home/admin/profile-edit")}
-              className=" bg-[#3755db] text-white px-8 py-2 rounded-xl hover:bg-blue-600 transition"
+              className="bg-[#3755db] text-white px-8 py-2 rounded-xl hover:bg-blue-600 transition"
             >
               Edit
             </button>
@@ -100,7 +96,6 @@ const Settings = () => {
             <Bell className="text-gray-500" />
             <span>Desktop Notifications</span>
           </div>
-          {/* Toggle Switch */}
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -119,7 +114,6 @@ const Settings = () => {
             <Mail className="text-gray-500" />
             <span>Email Notifications</span>
           </div>
-          {/* Toggle Switch */}
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"

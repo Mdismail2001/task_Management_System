@@ -27,6 +27,7 @@ import { AuthProvider } from "./components/Provider/AuthProvider.jsx";
 import TaskList from "./components/HomeLayout/TaskList.jsx";
 import CoverPage from "./pages/CoverPage.jsx";
 import DeleteTask from "./components/HomeLayoutAdmin/DeleteTask.jsx";
+import LogoutPage from "./components/ShareComponent/LogoutPage.jsx";
 
 const router = createBrowserRouter([
   // Cover page as root
@@ -69,7 +70,8 @@ const router = createBrowserRouter([
       { path: "edit", element: <Edit /> },
       { path: "settings", element: <Settings /> },
       { path: "profile-edit", element: <ProfileEdit /> },
-      {path: "delete-task", element:<DeleteTask/>}
+      { path: "delete-task", element:<DeleteTask/>},
+      { path: "logout", element: <LogoutPage/>}
     ],
   },
 ]);
