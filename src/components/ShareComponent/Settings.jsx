@@ -82,7 +82,7 @@ const Settings = () => {
           <div className="flex justify-end">
             <button
               onClick={() => navigate("/home/admin/profile-edit")}
-              className=" bg-[#3755db] text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+              className=" bg-[#3755db] text-white px-8 py-2 rounded-xl hover:bg-blue-600 transition"
             >
               Edit
             </button>

@@ -46,7 +46,9 @@ const ViewTask = () => {
             >
               <Edit size={20} />
             </button>
-            <button className="text-red-500 transition">
+            <button 
+            onClick={() => navigate("/home/admin/delete-task")}
+            className="text-red-500 transition">
               <Trash size={20} />
             </button>
           </div>
