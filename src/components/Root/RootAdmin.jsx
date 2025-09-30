@@ -57,7 +57,7 @@ const RootAdmin = () => {
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Blur background */}
-          <div className="absolute inset-0 backdrop-blur-sm bg-white/30"></div>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
           {/* Popup content */}
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-96 flex flex-col items-center z-10">
@@ -89,7 +89,7 @@ const RootAdmin = () => {
 
             {/* Upload button */}
             <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
+              className="px-3 py-2 bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
               onClick={handleUploadClick}
             >
               Upload Picture

@@ -1,5 +1,6 @@
 import React from "react";
 import { Trash, Edit, ArrowLeft } from "lucide-react";
+import { LuArrowBigLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 const ViewTask = () => {
@@ -22,33 +23,30 @@ const ViewTask = () => {
         {/* Top section: title + status */}
         <div className="flex flex-col mb-4">
           <h1 className="text-xl font-bold">{task.title}</h1>
-          <p className="text-sm text-gray-500 mb-2">{task.status}</p>
-
-          {/* Back arrow */}
           <button
-            className="flex items-center text-blue-500 hover:text-blue-700 text-sm font-medium"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft size={16} className="mr-1" /> Back
+            className="flex items-center justify-center text-[#3755db] hover:text-blue-600 text-sm font-medium py-4 rounded-xl bg-gray-100 w-8 h-6 "
+            onClick={() => navigate(-1)}>
+            <LuArrowBigLeft size={20} className="mr-1" /> 
           </button>
+          <p className="text-sm  mb-2 ">{task.status}</p> 
         </div>
 
         {/* Description */}
-        <p className="text-gray-700 mb-4 flex-1">{task.description}</p>
+        <p className="text-gray-700 mb-4 flex-1 " >{task.description}</p>
 
         {/* Bottom section: buttons */}
         <div className="flex justify-between items-center mt-auto">
           <div className="flex gap-2">
-            <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">
+            <button className="bg-[#3755db] text-white px-3 py-1 rounded-xl hover:bg-blue-600 transition">
               Work on it Now
             </button>
             <button
-              className="text-gray-600 hover:text-blue-500 transition"
+              className="text-gray-600 hover:text-blue-600 transition"
               onClick={() => navigate("/home/admin/edit")}
             >
               <Edit size={20} />
             </button>
-            <button className="text-gray-600 hover:text-red-500 transition">
+            <button className="text-red-500 transition">
               <Trash size={20} />
             </button>
           </div>
@@ -62,7 +60,7 @@ const ViewTask = () => {
         {/* Progress bar */}
         <div className="relative w-3 flex-1 bg-gray-200 rounded-full my-2">
           <div
-            className="bg-blue-600 w-3 rounded-full absolute bottom-0"
+            className="bg-[#3755db] w-3 rounded-full absolute bottom-0"
             style={{ height: `${task.progress}%` }}
           ></div>
         </div>

@@ -1,46 +1,43 @@
 import React, { useContext, useState } from "react";
-import { User, Bell, Mail, Check, X as XIcon } from "lucide-react"; // icons
+import { User, Bell, Mail, Eye, EyeOff } from "lucide-react"; // added Eye, EyeOff
 import { useNavigate } from "react-router";
-import { AuthContext } from '../Provider/AuthProvider';
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Settings = () => {
   const [fullName, setFullName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // state for toggle
   const [desktopNotif, setDesktopNotif] = useState(true);
-  const [desktopLevel, setDesktopLevel] = useState("Normal");
   const [emailNotif, setEmailNotif] = useState(false);
-  const [emailLevel, setEmailLevel] = useState("Critical");
   const navigate = useNavigate();
-  const {user} = useContext(AuthContext);
-  console.log(user)
+  const { user } = useContext(AuthContext);
 
   const logout = () => {
-    // Remove user and token from storage
     localStorage.removeItem("user");
     sessionStorage.removeItem("token");
-
-    // Redirect to login page
     navigate("/auth/login");
   };
 
-
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-8">
-      {/* Header: Title + Logout */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        <button
+          onClick={logout}
+          className="bg-[#b8001f] text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
+        >
           Log Out
         </button>
       </div>
 
-      {/* Account Settings Form */}
+      {/* Account Settings */}
       <div className="space-y-4">
         <p className="text-lg font-semibold">Account Settings</p>
         <form className="grid grid-cols-1 gap-4">
           {/* Full Name */}
-          <div className="flex items-center border rounded-lg px-3 py-2">
+          <div className="flex items-center shadow rounded-lg px-3 py-2">
             <User className="mr-2 text-gray-400" />
             <input
               type="text"
@@ -52,7 +49,7 @@ const Settings = () => {
           </div>
 
           {/* Email */}
-          <div className="flex items-center border rounded-lg px-3 py-2">
+          <div className="flex items-center shadow rounded-lg px-3 py-2">
             <Mail className="mr-2 text-gray-400" />
             <input
               type="email"
@@ -63,20 +60,30 @@ const Settings = () => {
             />
           </div>
 
-          {/* Password */}
-          <div className="flex items-center border rounded-lg px-3 py-2">
+          {/* Password with eye toggle */}
+          <div className="flex items-center shadow rounded-lg px-3 py-2 relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full outline-none"
+              className="w-full outline-none pr-10"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <div className="flex justify-end">
-            <button onClick={()=> navigate('/home/admin/profile-edit')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            <button
+              onClick={() => navigate("/home/admin/profile-edit")}
+              className=" bg-[#3755db] text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+            >
               Edit
             </button>
           </div>
@@ -87,58 +94,42 @@ const Settings = () => {
       <div className="space-y-4">
         <p className="text-lg font-semibold">Notification Settings</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Desktop Notifications */}
-          <div className="border rounded-lg p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Bell className="text-gray-500" />
-              <span>Allow desktop notifications</span>
-              <span>
-                {desktopNotif ? <Check className="text-green-500" /> : <XIcon className="text-red-500" />}
-              </span>
-            </div>
-            <input
-              type="text"
-              placeholder="Notification Level"
-              value={desktopLevel}
-              onChange={(e) => setDesktopLevel(e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 mt-2 outline-none"
-            />
-            <button
-              className={`px-3 py-1 rounded font-semibold ${
-                desktopNotif ? "bg-green-500 text-white" : "bg-gray-300"
-              }`}
-              onClick={() => setDesktopNotif(!desktopNotif)}
-            >
-              {desktopNotif ? "Enabled" : "Enable"}
-            </button>
+        {/* Desktop Notifications */}
+        <div className="flex items-center shadow rounded-lg px-3 py-2 justify-between">
+          <div className="flex items-center gap-2">
+            <Bell className="text-gray-500" />
+            <span>Desktop Notifications</span>
           </div>
+          {/* Toggle Switch */}
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={desktopNotif}
+              onChange={() => setDesktopNotif(!desktopNotif)}
+            />
+            <div className="w-11 h-6 bg-gray-300 peer-checked:bg-[#3755db] rounded-full peer transition"></div>
+            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+          </label>
+        </div>
 
-          {/* Critical Email Notifications */}
-          <div className="border rounded-lg p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Mail className="text-gray-500" />
-              <span>Send critical notifications to my email</span>
-              <span>
-                {emailNotif ? <Check className="text-green-500" /> : <XIcon className="text-red-500" />}
-              </span>
-            </div>
-            <input
-              type="text"
-              placeholder="Notification Level"
-              value={emailLevel}
-              onChange={(e) => setEmailLevel(e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 mt-2 outline-none"
-            />
-            <button
-              className={`px-3 py-1 rounded font-semibold ${
-                emailNotif ? "bg-green-500 text-white" : "bg-gray-300"
-              }`}
-              onClick={() => setEmailNotif(!emailNotif)}
-            >
-              {emailNotif ? "Enabled" : "Enable"}
-            </button>
+        {/* Email Notifications */}
+        <div className="flex items-center shadow rounded-lg px-3 py-2 justify-between">
+          <div className="flex items-center gap-2">
+            <Mail className="text-gray-500" />
+            <span>Email Notifications</span>
           </div>
+          {/* Toggle Switch */}
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={emailNotif}
+              onChange={() => setEmailNotif(!emailNotif)}
+            />
+            <div className="w-11 h-6 bg-gray-300 peer-checked:bg-[#3755db] rounded-full peer transition"></div>
+            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition peer-checked:translate-x-5"></div>
+          </label>
         </div>
       </div>
     </div>

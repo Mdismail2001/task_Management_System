@@ -55,7 +55,7 @@ const RightNav = ({ setShowPopup, userImage }) => {
         <Calendar
           onChange={setSelectedDate}
           value={selectedDate}
-          className="react-calendar text-sm mt-5"
+          className="react-calendar text-sm mt-5 rounded"
           nextLabel={null}   // removes right arrow
           prevLabel={null}   // removes left arrow
         />
