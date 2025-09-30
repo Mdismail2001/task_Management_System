@@ -39,7 +39,7 @@ const RootAdmin = () => {
           <LeftNav />
         </section>
 
-        <main className="col-span-7 h-screen overflow-y-auto bg-[#f5f7fc]">
+        <main className="col-span-8 h-screen overflow-y-auto bg-[#f5f7fc]">
           <header className="col-span-7 sticky top-0 z-50 bg-[#f5f7fc] ">
             <Navbar />
           </header>
@@ -48,7 +48,7 @@ const RootAdmin = () => {
           </div>
         </main>
 
-        <section className="col-span-3 sticky top-0 h-screen overflow-y-auto">
+        <section className="col-span-2 sticky top-0 h-screen overflow-y-auto">
           <RightNav setShowPopup={setShowPopup} userImage={userImage} />
         </section>
       </div>

@@ -1,63 +1,64 @@
 import React, { useContext, useState } from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
 import { AuthContext } from "../Provider/AuthProvider";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const RightNav = ({ setShowPopup, userImage }) => {
-  const [date, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [isActive, setIsActive] = useState(true);
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="  flex flex-col items-center -2 min-h-screen fixed  p-2  mt-4">
+    <div className="flex flex-col gap-6  bg-[#f5f7fc] h-screen pr-4 py-4">
       {/* User Profile */}
-      <div className="relative flex flex-col items-center">
-        <img
-          className="w-20 h-20 rounded-xl cursor-pointer"
-          src={userImage}
-          alt="User"
-        />
-        <span
-          className={`absolute top-0 right-5 w-4 h-4 rounded-full border-2 border-white ${
-            isActive ? "bg-green-500" : "bg-gray-400"
-          }`}
-        ></span>
+      <div className="flex flex-col items-center bg-white rounded  p-4">
+        <div className="relative">
+          <img
+            className="w-[90px] h-[90px] rounded-xl cursor-pointer"
+            src={userImage}
+            alt="User"
+          />
+          <span
+            className={`absolute top-0 right-0 w-4 h-4 rounded-full border-2 border-white ${
+              isActive ? "bg-green-500" : "bg-gray-400"
+            }`}
+          ></span>
+        </div>
 
-        <h2 className="mt-4 text-lg font-semibold text-gray-800">
+        <h2 className="mt-4 text-lg font-semibold text-gray-800 text-center truncate w-full">
           {user?.username}
         </h2>
-        <p className="text-sm text-gray-500">{user?.email}</p>
+        <p className="text-sm text-gray-500 text-center truncate w-full">
+          {user?.email}
+        </p>
 
         <button
           onClick={() => setShowPopup(true)}
-          className="mt-4 px-4 py-2 bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+          className="mt-4 w-[108px]  h-[39px] bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
         >
           My Profile
         </button>
       </div>
 
-      {/* Divider */}
-      {/* <hr className="w-full my-6 border-gray-200" /> */}
-
-          <div className=" flex flex-col items-center  bg-[#f5f7fc] py-2 rounded-xl mt-5">
-        <div className="flex justify-between w-full p-2">
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#3755db] text-white rounded-lg hover:bg-blue-600 transition">
+      {/* Calendar Buttons */}
+      <div className="flex flex-col bg-[#f5f7fc] py-4  rounded-xl">
+        <div className="grid grid-cols-2 gap-2 w-full mb-3">
+          <button className="px-3 py-2 text-sm rounded-lg bg-[#3755db] text-white hover:bg-blue-600 transition">
             Calendar
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+          <button className="px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition">
             Reminder
           </button>
         </div>
 
-        {/* Calendar */}
-        <div className="w-full ">
-          <DayPicker
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="bg-transparent p-2 rounded-lg"
-          />
-        </div>
+        {/* Calendar with arrows removed */}
+        <Calendar
+          onChange={setSelectedDate}
+          value={selectedDate}
+          className="react-calendar text-sm mt-5"
+          nextLabel={null}   // removes right arrow
+          prevLabel={null}   // removes left arrow
+        />
       </div>
     </div>
   );

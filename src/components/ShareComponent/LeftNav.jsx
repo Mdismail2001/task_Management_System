@@ -24,7 +24,7 @@ const LeftNav = () => {
   return (
     <div className="grid grid-cols-12 bg-white shadow-lg">
       {/* Profile Section */}
-      <div className="col-span-3 bg-[rgb(55,85,219)] h-screen flex justify-center">
+      <div className="col-span-3 bg-[#3755db] h-screen flex justify-center">
         <div className="border-2 border-[#fabc37] items-center rounded-lg mt-20 p-1 inline-flex h-10 w-10">
           <img
             src="/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg"
@@ -51,12 +51,12 @@ const LeftNav = () => {
                     className={({ isActive }) =>
                       `flex items-center gap-3 transition ${
                         isActive
-                          ? "text-blue-600 font-bold"
+                          ? "text-[#3755db] font-bold"
                           : "text-gray-500"
                       }`
                     }
                   >
-                    <Icon className="size-5 text-blue-600" />
+                    <Icon className="size-5 text-[#3755db]" />
                     <span>{route.label}</span>
                   </NavLink>
                 </li>
