@@ -66,7 +66,7 @@ const router = createBrowserRouter([
       { path: "", element: <MainContainer2 /> },
       { path: "create-task", element: <CreateTask /> },
       { path: "all-task", element: <AllTask /> },
-      { path: "view", element: <View /> },
+      { path: "view/:id", element: <View /> },
       { path: "edit", element: <Edit /> },
       { path: "settings", element: <Settings /> },
       { path: "profile-edit", element: <ProfileEdit /> },

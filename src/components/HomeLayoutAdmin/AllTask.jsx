@@ -160,7 +160,7 @@ const AllTask = () => {
 
                 {/* Footer */}
                 <button
-                  onClick={() => navigate(`/home/admin/view/${task.id}`)}
+                  onClick={() => navigate(`/home/admin/view/${task.id}`, { state: task })}
                   className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
                 >
                   View Task <FaArrowRight size={14} />
