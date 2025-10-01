@@ -67,7 +67,7 @@ const router = createBrowserRouter([
       { path: "create-task", element: <CreateTask /> },
       { path: "all-task", element: <AllTask /> },
       { path: "view/:id", element: <View /> },
-      { path: "edit", element: <Edit /> },
+      { path: "edit/:id", element: <Edit /> },
       { path: "settings", element: <Settings /> },
       { path: "profile-edit", element: <ProfileEdit /> },
       { path: "delete-task", element:<DeleteTask/>},

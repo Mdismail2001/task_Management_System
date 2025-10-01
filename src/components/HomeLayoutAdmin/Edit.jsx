@@ -1,86 +1,174 @@
-import React, { useState } from "react";
-import { X } from "lucide-react"; // cross icon
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Provider/AuthProvider";
 
-const Edit = () => {
+const EditTask = () => {
+  const { id } = useParams(); // ✅ task id from url
   const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
 
-  const [taskName, setTaskName] = useState("Task Title Example");
-  const [priority, setPriority] = useState("normal");
-  const [date, setDate] = useState(new Date());
-  const [description, setDescription] = useState(
-    "This is a sample description for the task."
-  );
+  const [task, setTask] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  // Fetch single task
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const res = await fetch(
+          `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&id=${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        if (data?.data) {
+          setTask(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching task:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTask();
+  }, [id, token]);
+
+  // Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      const res = await fetch(
+        `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&id=${id}`,
+        {
+          method: "POST", // if API expects POST for update
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(task),
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to update task");
+
+      alert("✅ Task updated successfully!");
+      navigate("/home/admin/all-task"); // go back to all tasks
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("❌ Failed to update task");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-10">Loading task...</p>;
+  if (!task) return <p className="text-center mt-10 text-red-500">Task not found</p>;
 
   return (
-    // 🔹 Fullscreen blurred background with flexbox center
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      {/* Card */}
-      <div className="relative max-w-lg w-full bg-white rounded-2xl shadow-xl p-6">
-        {/* Close Icon */}
-        <button
-          onClick={() => navigate(-1)} // go back
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-        >
-          <X size={22} />
-        </button>
+    <div className="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+      <h1 className="text-2xl font-bold text-blue-900 mb-6">Edit Task #{id}</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            value={task.title || ""}
+            onChange={(e) => setTask({ ...task, title: e.target.value })}
+            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            required
+          />
+        </div>
 
-        <h1 className="text-2xl font-bold mb-6 text-center">Edit Task</h1>
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            value={task.description || ""}
+            onChange={(e) => setTask({ ...task, description: e.target.value })}
+            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            rows="4"
+            required
+          />
+        </div>
 
-        {/* Task Name */}
-        <label className="block mb-2 font-medium">Task Name</label>
-        <input
-          type="text"
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          placeholder="Enter task name"
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-600 outline-none"
-        />
+        {/* Status */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <select
+            value={task.status || ""}
+            onChange={(e) => setTask({ ...task, status: e.target.value })}
+            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+          >
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
 
-        {/* Priority & Due Date */}
-        <div className="flex gap-4 mb-4">
-          <div className="flex-1">
-            <label className="block mb-2 font-medium">Task Priority</label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              className="w-full shadow rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-600 outline-none"
-            >
-              <option value="low">Less Important</option>
-              <option value="normal">Normal</option>
-              <option value="high">Emergency</option>
-            </select>
+        {/* Dates */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Created Date</label>
+            <input
+              type="date"
+              value={task.createdDate || ""}
+              onChange={(e) => setTask({ ...task, createdDate: e.target.value })}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
           </div>
-
-          <div className="flex-1">
-            <label className="block mb-2 font-medium">Due Date</label>
-            <DatePicker
-              selected={date}
-              onChange={(d) => setDate(d)}
-              dateFormat="yyyy-MM-dd"
-              className="w-full shadow rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-600 outline-none"
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Due Date</label>
+            <input
+              type="date"
+              value={task.dueDate || ""}
+              onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             />
           </div>
         </div>
 
-        {/* Description */}
-        <label className="block mb-2 font-medium">Task Description</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Enter task details"
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 h-24 resize-none focus:ring-2 focus:ring-blue-600 outline-none"
-        ></textarea>
+        {/* Progress */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Progress (%)</label>
+          <input
+            type="number"
+            value={task.progress || 0}
+            onChange={(e) =>
+              setTask({ ...task, progress: Math.min(100, Math.max(0, e.target.value)) })
+            }
+            className="w-full border rounded-lg px-3 py-2 mt-1"
+            min="0"
+            max="100"
+          />
+        </div>
 
-        {/* Save Button */}
-        <button className="w-1/2 bg-[#3755db] text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition">
-          Save Task
-        </button>
-      </div>
+        {/* Submit */}
+        <div className="flex justify-end gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 bg-[#3755db] text-white rounded-lg hover:bg-blue-600"
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default Edit;
+export default EditTask;
