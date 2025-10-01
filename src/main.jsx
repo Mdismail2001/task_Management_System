@@ -70,7 +70,7 @@ const router = createBrowserRouter([
       { path: "edit/:id", element: <Edit /> },
       { path: "settings", element: <Settings /> },
       { path: "profile-edit", element: <ProfileEdit /> },
-      { path: "delete-task", element:<DeleteTask/>},
+      { path: "delete-task/:id", element:<DeleteTask/>},
       { path: "logout", element: <LogoutPage/>}
     ],
   },

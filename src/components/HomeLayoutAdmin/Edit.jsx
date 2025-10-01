@@ -57,11 +57,11 @@ const EditTask = () => {
 
       if (!res.ok) throw new Error("Failed to update task");
 
-      alert("✅ Task updated successfully!");
+      alert(" Task updated successfully!");
       navigate("/home/admin/all-task"); // go back to all tasks
     } catch (error) {
       console.error("Update failed:", error);
-      alert("❌ Failed to update task");
+      alert(" Failed to update task");
     } finally {
       setSaving(false);
     }
