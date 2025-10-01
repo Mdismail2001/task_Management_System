@@ -6,11 +6,20 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const LeftNav = () => {
   const { user } = useContext(AuthContext);
-  console.log(user)
+  console.log("LeftNav user:", user);
+
+  if (!user) {
+    //  Show a loading state
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-500">Loading user...</p>
+      </div>
+    );
+  }
 
   // Role-based routes
   const routes =
-    user?.role === "user"
+    user.role === "user"
       ? [
           { to: "/home/user", label: "Overview", icon: MdOutlineGridView, exact: true },
           { to: "/home/user/task", label: "Tasks", icon: FaTasks },
@@ -39,7 +48,9 @@ const LeftNav = () => {
       <div className="col-span-9 bg-white h-screen">
         <div className="flex-1 mt-20 ml-5">
           <h2 className="text-xl text-blue-900 font-bold py-2">My Space</h2>
-          <p className="text-semibold text-gray-500">Workspace Title</p>
+          <p className="text-semibold text-gray-500">
+            Workspace: {user.role}
+          </p>
 
           <ul className="space-y-6 py-10 text-xl relative">
             {routes.map((route) => {
@@ -51,9 +62,7 @@ const LeftNav = () => {
                     end={route.exact}
                     className={({ isActive }) =>
                       `flex items-center gap-3 transition ${
-                        isActive
-                          ? "text-[#3755db] font-bold"
-                          : "text-gray-500"
+                        isActive ? "text-[#3755db] font-bold" : "text-gray-500"
                       }`
                     }
                   >

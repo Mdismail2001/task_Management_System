@@ -3,7 +3,7 @@ import { IoNotificationsOutline, IoSearchOutline } from "react-icons/io5";
 
 const Navbar = () => {
   return (
-    <div className="w-full px-6 py-3 flex items-center justify-between">
+    <div className="w-full px-8 py-3 flex items-center justify-between">
       {/* Search Bar */}
       <div className="relative flex items-center w-1/2">
         <input

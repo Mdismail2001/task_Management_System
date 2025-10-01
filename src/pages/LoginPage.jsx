@@ -1,51 +1,45 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom"; // ✅ Correct import
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../components/Provider/AuthProvider";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); //  get login from context
 
-  const login = async (e) => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      const username = e.target.username.value;
+      const email = e.target.email.value;
       const password = e.target.password.value;
 
-      const res = await fetch("https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await fetch(
+        "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
-      if (!res.ok ) throw new Error("Login failed");
+      if (!res.ok) throw new Error("Login failed");
 
       const data = await res.json();
-      console.log(data);
 
-      // Save to storage
-      localStorage.setItem("user", JSON.stringify(data.user));
-      sessionStorage.setItem("token", data.token);
+      //  use context login so state updates immediately
+      login(data.user, data.token);
 
-      // Update state
-      // setUser(data.user);
-      // setToken(data.token);
-      
-      navigate('/home/admin');
-      // return true;
+      //  navigate by role
+      if (data.user.role === "admin") {
+        navigate("/home/admin");
+      } else {
+        navigate("/home/user");
+      }
     } catch (err) {
       console.error(err);
-      return false;
     }
   };
-
-  // Logout function
-  // const logout = () => {
-  //   localStorage.removeItem("user");
-  //   sessionStorage.removeItem("token");
-  //   setUser(null);
-  //   setToken(null);
-  // };
 
   return (
     <div className="grid grid-cols-12 h-screen">
@@ -54,19 +48,18 @@ const LoginPage = () => {
         <div className="w-full max-w-sm p-8">
           <h2 className="text-2xl font-bold mb-6">Welcome Back</h2>
 
-          <form className="space-y-4"               
-          onSubmit={login}
-          >
+          <form className="space-y-4" onSubmit={handleLogin}>
             {/* Email */}
             <div>
               <label className="block text-sm font-medium mb-1">
-                User Name
+                User Email
               </label>
               <input
-                type="text"
-                name="username"
-                placeholder="user name"
-                className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="w-full p-3 shadow rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
@@ -80,7 +73,8 @@ const LoginPage = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
-                  className="w-full p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full p-3 shadow rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  required
                 />
                 <button
                   type="button"
@@ -124,10 +118,10 @@ const LoginPage = () => {
           }}
         ></div>
 
-        {/* Overlay to improve readability */}
+        {/* Overlay */}
         <div className="absolute inset-0 bg-black/30"></div>
 
-        {/* Create Account Button (top-right) */}
+        {/* Create Account Button */}
         <div className="absolute top-6 right-6 z-10">
           <Link
             to="/auth/register"
@@ -147,7 +141,7 @@ const LoginPage = () => {
         {/* Mobile App Buttons */}
         <div className="relative z-10 w-full text-center space-y-2">
           <p className="text-sm">Get the Mobile App</p>
-          <div className="flex justify-center gap-4" >
+          <div className="flex justify-center gap-4">
             <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
               Download
             </button>
@@ -155,9 +149,7 @@ const LoginPage = () => {
               Download
             </button>
           </div>
-          <p className="mt-4 text-xs">
-            Copyright 2021 | All Rights Reserved
-          </p>
+          <p className="mt-4 text-xs">Copyright 2021 | All Rights Reserved</p>
         </div>
       </div>
     </div>

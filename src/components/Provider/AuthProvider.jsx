@@ -4,17 +4,10 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Example user (replace with real data from backend)
-  // const [user, setUser] = useState({
-  //   name: "Admin",
-  //   role: "admin", // can be "admin" or "user"
-  // });
-
-  const [user, setUser] = useState(); // logged in user info
+  const [user, setUser] = useState(null); // logged in user info
   const [token, setToken] = useState(null); // session token
-  // console.log(user);
-  // console.log(token);
 
+  // Restore session if exists
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedToken = sessionStorage.getItem("token");
@@ -25,8 +18,25 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  //  Login function to update state + storage
+  const login = (userData, tokenData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    sessionStorage.setItem("token", tokenData);
+
+    setUser(userData);   // update immediately
+    setToken(tokenData);
+  };
+
+  //  Logout function
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+  };
+
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

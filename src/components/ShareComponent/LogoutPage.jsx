@@ -9,7 +9,7 @@ const LogoutPage = () => {
 
   const handleLogout = () => {
     logout(); // clear session
-    navigate("/login"); // redirect to login
+    navigate("/auth/login"); // redirect to login
   };
 
   return (

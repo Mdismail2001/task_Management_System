@@ -36,7 +36,7 @@ const Settings = () => {
             <User className="mr-2 text-gray-400" />
             <input
               type="text"
-              placeholder={user?.username || "Full Name"}
+              placeholder={user?.fullname || "Full Name"}
               value={fullName ?? ""}
               onChange={(e) => setFullName(e.target.value)}
               className="w-full outline-none"

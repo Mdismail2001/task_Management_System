@@ -1,49 +1,70 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom"; // ✅ useNavigate from react-router-dom
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [role, setRole] = useState("user"); // State for role selection
+  const [role, setRole] = useState("user");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     const formData = new FormData(e.target);
     const data = {
-      fullName: formData.get("fullName"),
+      fullname: formData.get("fullName"), // ✅ match API body (fullname, not fullName)
       email: formData.get("email"),
       password: formData.get("password"),
-      confirmPassword: formData.get("confirmPassword"),
       role: role,
     };
-    console.log("Form Data:", data);
-    // Add your registration logic here (API call, validation, etc.)
+
+    try {
+      const res = await fetch(
+        "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await res.json();
+      console.log("API Response:", result);
+
+      if (res.ok) {
+        // ✅ navigate to login on success
+        navigate("/auth/login");
+      } else {
+        setError(result.message || "Registration failed");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="grid grid-cols-12 h-screen">
-      {/* Left Side - Background Image */}
+      {/* Left Side */}
       <div className="col-span-12 lg:col-span-6 relative flex flex-col justify-between items-center text-white p-8 overflow-hidden">
-        {/* Background */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('/src/assets/images/Frame 23.png')",
-          }}
+          style={{ backgroundImage: "url('/src/assets/images/Frame 23.png')" }}
         ></div>
-
-        {/* Overlay */}
         <div className="absolute inset-0 bg-black/30"></div>
-
-        {/* Centered Text */}
         <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
           <h2 className="text-3xl font-bold max-w-sm">
             Join us and unlock new possibilities.
           </h2>
         </div>
-
-        {/* Mobile App Buttons */}
         <div className="relative z-10 w-full text-center space-y-2">
           <p className="text-sm">Get the Mobile App</p>
           <div className="flex justify-center gap-4">
@@ -58,9 +79,8 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      {/* Right Side - Register Form */}
+      {/* Right Side */}
       <div className="col-span-12 lg:col-span-6 flex justify-center items-center bg-gray-50 relative">
-        {/* Login Button (top-right corner of form side) */}
         <div className="absolute top-6 right-6">
           <Link
             to="/auth/login"
@@ -76,9 +96,7 @@ const RegisterPage = () => {
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Full Name
-              </label>
+              <label className="block text-sm font-medium mb-1">Full Name</label>
               <input
                 name="fullName"
                 type="text"
@@ -104,9 +122,7 @@ const RegisterPage = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Password
-              </label>
+              <label className="block text-sm font-medium mb-1">Password</label>
               <div className="relative">
                 <input
                   name="password"
@@ -140,9 +156,7 @@ const RegisterPage = () => {
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowConfirmPassword(!showConfirmPassword)
-                  }
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -164,12 +178,16 @@ const RegisterPage = () => {
               </select>
             </div>
 
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
             >
-              Sign Up
+              {loading ? "Registering..." : "Sign Up"}
             </button>
           </form>
         </div>
