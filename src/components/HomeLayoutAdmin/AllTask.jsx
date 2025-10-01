@@ -1,36 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
+import { AuthContext } from "../Provider/AuthProvider"; 
 
 const AllTask = () => {
   const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
 
-  // Active tab state
   const [activeTab, setActiveTab] = useState("All");
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Demo tasks
-  const tasks = Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    title: `Task ${i + 1}`,
-    description: `This is a short description for Task ${i + 1}.`,
-    status: ["Pending", "In Progress", "Completed"][i % 3],
-  }));
+  // Fetch tasks from API
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const res = await fetch(
+          "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-  // Status badge color for task cards
+        if (!res.ok) {
+          throw new Error("Failed to fetch tasks");
+        }
+
+        const data = await res.json();
+        console.log("Fetched tasks:", data);
+
+        // ✅ normalize status (capitalize properly)
+        const normalizedTasks = (data?.data || []).map((task) => ({
+          ...task,
+          status:
+            task.status?.toLowerCase() === "pending"
+              ? "Pending"
+              : task.status?.toLowerCase() === "in progress" ||
+                task.status?.toLowerCase() === "inprogress"
+              ? "In Progress"
+              : task.status?.toLowerCase() === "completed"
+              ? "Completed"
+              : task.status,
+        }));
+
+        setTasks(normalizedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchTasks();
+    }
+  }, [token]);
+
+  // badge color styles
   const getStatusClasses = (status) => {
     switch (status) {
       case "Pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 border border-yellow-300";
       case "In Progress":
-        return "bg-blue-100 text-[#3755db]";
+        return "bg-blue-100 text-blue-800 border border-blue-300";
       case "Completed":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 border border-green-300";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 border border-gray-300";
     }
   };
 
-  // Count tasks by status
+  // counts for tabs
   const counts = {
     All: tasks.length,
     Pending: tasks.filter((t) => t.status === "Pending").length,
@@ -54,7 +98,7 @@ const AllTask = () => {
         </button>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Tabs */}
       <div className="flex border-b mb-6">
         {["All", "Pending", "In Progress", "Completed"].map((tab) => (
           <button
@@ -63,7 +107,7 @@ const AllTask = () => {
             className={`flex-1 flex items-center justify-between px-8 py-3 border-b-2 transition ${
               activeTab === tab
                 ? "border-[#3755db] text-[#3755db] font-semibold bg-blue-50"
-                : "border-transparent text-gray-600  hover:bg-gray-50"
+                : "border-transparent text-gray-600 hover:bg-gray-50"
             }`}
           >
             <span>{tab}</span>
@@ -80,44 +124,51 @@ const AllTask = () => {
         ))}
       </div>
 
-      {/* Task Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tasks
-          .filter((task) => activeTab === "All" || task.status === activeTab)
-          .map((task) => (
-            <div
-              key={task.id}
-              className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between"
-            >
-              {/* Top Row: ID left, Status badge right */}
-              <div className="flex justify-between items-center mb-3">
-                <p className="font-semibold text-gray-800">#{task.id}</p>
-                <span
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusClasses(
-                    task.status
-                  )}`}
-                >
-                  {task.status}
-                </span>
-              </div>
-
-              {/* Task Title + Description */}
-              <div className="mb-4 flex-1">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {task.description}
-                </h2>
-              </div>
-
-              {/* View Task with Text + Arrow */}
-              <button
-                onClick={() => navigate("/home/admin/view")}
-                className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
+      {/* Task Cards */}
+      {loading ? (
+        <p className="text-center text-gray-600">Loading tasks...</p>
+      ) : tasks.length === 0 ? (
+        <p className="text-center text-gray-600">No tasks found.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tasks
+            .filter((task) => activeTab === "All" || task.status === activeTab)
+            .map((task) => (
+              <div
+                key={task.id}
+                className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between"
               >
-                View Task <FaArrowRight size={14} />
-              </button>
-            </div>
-          ))}
-      </div>
+                {/* Header */}
+                <div className="flex justify-between items-center mb-3">
+                  <p className="font-semibold text-gray-800">#{task.id}</p>
+                  <span
+                    className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusClasses(
+                      task.status
+                    )}`}
+                  >
+                    {task.status}
+                  </span>
+                </div>
+
+                {/* Body */}
+                <div className="mb-4 flex-1">
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    {task.title}
+                  </h2>
+                  <p className="text-gray-600 text-sm">{task.description}</p>
+                </div>
+
+                {/* Footer */}
+                <button
+                  onClick={() => navigate(`/home/admin/view/${task.id}`)}
+                  className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
+                >
+                  View Task <FaArrowRight size={14} />
+                </button>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

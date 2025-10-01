@@ -65,19 +65,6 @@ const CreateTask = () => {
         return;
       }
 
-      const formData = new FormData();
-      formData.append("title", title);
-      console.log(title,description,assignedUser,priority)
-      formData.append("description", description);
-      formData.append("status", "pending");
-      formData.append("assigned_to_user_id", assignedUser); // only ID
-      formData.append(
-        "deadline",
-        date.toISOString().slice(0, 19).replace("T", " ")
-      );
-      // formData.append("priority", priority);
-      // if (file) formData.append("file", file);
-      // console.log(title);
       const data = {
           "title": title,
           "description": description,
@@ -96,7 +83,6 @@ const CreateTask = () => {
 
         }
       );
-          // console.log([...formData.entries()]);
 
       const result = await res.json();
       // console.log("Task API Response:", result);
