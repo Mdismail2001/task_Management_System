@@ -10,18 +10,22 @@ const CreateTask = () => {
   const [date, setDate] = useState(new Date());
   const [priority, setPriority] = useState("normal");
   const [file, setFile] = useState(null);
-  const [assignedUser, setAssignedUser] = useState(""); // store user id
-  const [users, setUsers] = useState([]); // list of users
+  const [assignedUser, setAssignedUser] = useState(""); // only user id
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // console.log( title,description,date,priority,file,assignedUser)
 
   const navigate = useNavigate();
 
-  // Fetch users when modal opens
+  // Fetch users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
+        // console.log(token)
+        if (!token) return;
+
         const res = await fetch(
           "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=users",
           {
@@ -29,10 +33,9 @@ const CreateTask = () => {
           }
         );
         const data = await res.json();
-        console.log("API raw response:", data);
 
         if (res.ok) {
-          setUsers(data.data || []); // ✅ set actual user array
+          setUsers(data.data || []);
         } else {
           setError("Failed to fetch users");
         }
@@ -49,12 +52,13 @@ const CreateTask = () => {
     setFile(e.target.files[0]);
   };
 
-  const handleCreateTask = async () => {
+  const handleCreateTask = async (e) => {
+    e.preventDefault(); // ✅ prevent page reload
     setLoading(true);
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       if (!token) {
         setError("You must be logged in to create a task.");
         setLoading(false);
@@ -63,28 +67,40 @@ const CreateTask = () => {
 
       const formData = new FormData();
       formData.append("title", title);
+      console.log(title,description,assignedUser,priority)
       formData.append("description", description);
       formData.append("status", "pending");
-      formData.append("assigned_to_user_id", assignedUser); // ✅ selected user id
+      formData.append("assigned_to_user_id", assignedUser); // only ID
       formData.append(
         "deadline",
         date.toISOString().slice(0, 19).replace("T", " ")
       );
-      formData.append("priority", priority);
-
-      if (file) formData.append("file", file);
+      // formData.append("priority", priority);
+      // if (file) formData.append("file", file);
+      // console.log(title);
+      const data = {
+          "title": title,
+          "description": description,
+          "status": "pending", // pending, in_progress, completed, cancelled
+          "assigned_to_user_id": assignedUser,
+          "deadline": date,
+          "priority": priority // low, medium, high
+        }
 
       const res = await fetch(
         "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
-          body: formData,
+          body: JSON.stringify(data),
+
         }
       );
+          // console.log([...formData.entries()]);
 
       const result = await res.json();
-      console.log("Task API Response:", result);
+      // console.log("Task API Response:", result);
+        alert(result.message);
 
       if (res.ok) {
         navigate("/home/admin/all-task");
@@ -101,7 +117,7 @@ const CreateTask = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      {/* Blurred background */}
+      {/* Background */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       {/* Modal */}
@@ -116,91 +132,99 @@ const CreateTask = () => {
 
         <h1 className="text-2xl font-bold mb-4">Create Task</h1>
 
-        {/* Task Name */}
-        <label className="block mb-2 font-medium">Task Name</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter task name"
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
-        />
+        {/* ✅ Form starts here */}
+        <form onSubmit={handleCreateTask}>
+          {/* Task Name */}
+          <label className="block mb-2 font-medium">Task Name</label>
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter task name"
+            className="w-full shadow rounded-lg px-3 py-2 mb-4"
+          />
 
-        {/* Priority & Due Date */}
-        <div className="flex gap-4 mb-4">
-          <div className="flex-1">
-            <label className="block mb-2 font-medium">Task Priority</label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              className="w-full shadow rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-            >
-              <option value="low">Less Important</option>
-              <option value="normal">Normal</option>
-              <option value="high">Emergency</option>
-            </select>
+          {/* Priority & Due Date */}
+          <div className="flex gap-4 mb-4">
+            <div className="flex-1">
+              <label className="block mb-2 font-medium">Task Priority</label>
+              <select
+                name="priority"
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+                className="w-full shadow rounded-lg px-3 py-2"
+              >
+                <option value="low">Less Important</option>
+                <option value="normal">Normal</option>
+                <option value="high">Emergency</option>
+              </select>
+            </div>
+
+            <div className="flex-1">
+              <label className="block mb-2 font-medium">Due Date</label>
+              <DatePicker
+                selected={date}
+                onChange={(d) => setDate(d)}
+                showTimeSelect
+                dateFormat="yyyy-MM-dd HH:mm:ss"
+                className="w-full shadow rounded-lg px-3 py-2"
+              />
+            </div>
           </div>
 
-          <div className="flex-1">
-            <label className="block mb-2 font-medium">Due Date</label>
-            <DatePicker
-              selected={date}
-              onChange={(d) => setDate(d)}
-              showTimeSelect
-              dateFormat="yyyy-MM-dd HH:mm:ss"
-              className="w-full shadow rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-            />
-          </div>
-        </div>
+          {/* Assign To */}
+          <label className="block mb-2 font-medium">Assign To</label>
+          <select
+            name="assignedUser"
+            value={assignedUser}
+            onChange={(e) => setAssignedUser(e.target.value)}
+            className="w-full shadow rounded-lg px-3 py-2 mb-4"
+          >
+            <option value="">Select user</option>
+            {users.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.fullname}
+              </option>
+            ))}
+          </select>
 
-        {/* Assign To */}
-        <label className="block mb-2 font-medium">Assign To</label>
-        <select
-          value={assignedUser}
-          onChange={(e) => setAssignedUser(e.target.value)}
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
-        >
-          <option value="">Select user</option>
-          {users?.map((u) => (
-            <option key={u.id} value={u.id}>
-              {u.fullname} ({u.email})
-            </option>
-          ))}
-        </select>
+          {/* Description */}
+          <label className="block mb-2 font-medium">Task Description</label>
+          <textarea
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter task details"
+            className="w-full shadow rounded-lg px-3 py-2 mb-4 h-24 resize-none"
+          ></textarea>
 
-        {/* Description */}
-        <label className="block mb-2 font-medium">Task Description</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Enter task details"
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 h-24 resize-none focus:ring-2 focus:ring-blue-600 outline-none"
-        ></textarea>
+          {/* File Upload */}
+          <label className="block mb-2 font-medium">Attach File</label>
+          <input
+            type="file"
+            name="file"
+            onChange={handleFileChange}
+            className="w-full shadow rounded-lg px-3 py-2 mb-4"
+          />
+          {file && (
+            <p className="text-sm text-gray-600 mb-4">
+              Selected file: {file.name}
+            </p>
+          )}
 
-        {/* File Upload */}
-        <label className="block mb-2 font-medium">Attach File</label>
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="w-full shadow rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-blue-600 outline-none"
-        />
-        {file && (
-          <p className="text-sm text-gray-600 mb-4">
-            Selected file: {file.name}
-          </p>
-        )}
+          {/* Error */}
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
-        {/* Error */}
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-
-        {/* Submit Button */}
-        <button
-          onClick={handleCreateTask}
-          disabled={loading}
-          className="w-1/2 bg-[#3755db] text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50"
-        >
-          {loading ? "Creating..." : "Create"}
-        </button>
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-1/2 bg-[#3755db] text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50"
+          >
+            {loading ? "Creating..." : "Create"}
+          </button>
+        </form>
       </div>
     </div>
   );
