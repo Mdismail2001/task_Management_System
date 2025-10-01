@@ -26,7 +26,7 @@ const RightNav = ({ setShowPopup, userImage }) => {
         </div>
 
         <h2 className="mt-4 text-lg font-semibold text-gray-800 text-center truncate w-full">
-          {user?.username}
+          {user?.fullname}
         </h2>
         <p className="text-sm text-gray-500 text-center truncate w-full">
           {user?.email}

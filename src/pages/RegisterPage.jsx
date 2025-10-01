@@ -35,7 +35,7 @@ const RegisterPage = () => {
       );
 
       const result = await res.json();
-      console.log("API Response:", result);
+      // console.log("API Response:", result);
 
       if (res.ok) {
         // ✅ navigate to login on success

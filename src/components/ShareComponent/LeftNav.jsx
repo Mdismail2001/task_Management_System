@@ -6,7 +6,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const LeftNav = () => {
   const { user } = useContext(AuthContext);
-  console.log("LeftNav user:", user);
+  // console.log("LeftNav user:", user);
 
   if (!user) {
     //  Show a loading state
