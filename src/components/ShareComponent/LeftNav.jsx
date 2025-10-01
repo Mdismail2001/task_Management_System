@@ -6,6 +6,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const LeftNav = () => {
   const { user } = useContext(AuthContext);
+  console.log(user)
 
   // Role-based routes
   const routes =
