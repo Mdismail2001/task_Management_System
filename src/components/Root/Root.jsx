@@ -43,7 +43,7 @@ const Root = () => {
           <header className=" sticky top-0 z-50 bg-[#f5f7fc] ">
             <Navbar />
           </header>
-          <div className="p-4">
+          <div className="bg-[#f5f7fc]">
             <Outlet />
           </div>
         </main>

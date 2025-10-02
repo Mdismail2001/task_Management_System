@@ -4,7 +4,7 @@ import Banner from "./Banner";
 const MainContainer = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f5f7fc]">
       {/* Banner Section */}
       <Banner />
 

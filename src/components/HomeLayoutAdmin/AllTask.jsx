@@ -39,13 +39,15 @@ const AllTask = () => {
           status:
             task.status?.toLowerCase() === "pending"
               ? "Pending"
-              : task.status?.toLowerCase() === "in progress" ||
-                task.status?.toLowerCase() === "inprogress"
+              : task.status?.toLowerCase() === "in_progress" ||
+                task.status?.toLowerCase() === "in progress"
               ? "In Progress"
               : task.status?.toLowerCase() === "completed"
               ? "Completed"
               : task.status,
         }));
+
+        console.log(normalizedTasks)
 
         setTasks(normalizedTasks);
       } catch (error) {

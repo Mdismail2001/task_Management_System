@@ -141,9 +141,9 @@ const CreateTask = () => {
                 onChange={(e) => setPriority(e.target.value)}
                 className="w-full shadow rounded-lg px-3 py-2"
               >
-                <option value="low">Less Important</option>
-                <option value="normal">Normal</option>
-                <option value="high">Emergency</option>
+                <option value="low">low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
               </select>
             </div>
 
