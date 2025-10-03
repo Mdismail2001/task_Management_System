@@ -8,6 +8,29 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Utility: map API status -> label + colors
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case "completed":
+        return "Completed";
+      case "in_progress":
+        return "In Progress";
+      default:
+        return "Pending";
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-600";
+      case "in_progress":
+        return "bg-blue-100 text-blue-600";
+      default:
+        return "bg-yellow-100 text-yellow-600";
+    }
+  };
+
   useEffect(() => {
     if (!user) return;
     const fetchTasks = async () => {
@@ -23,6 +46,7 @@ const TaskList = () => {
           }
         );
         const data = await res.json();
+        // console.log(data);
         if (data?.data) {
           setTasks(data.data);
         } else {
@@ -54,16 +78,11 @@ const TaskList = () => {
               <div className="flex justify-between items-center text-sm text-gray-500">
                 <span className="font-semibold">#{task.id}</span>
                 <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium
-                    ${
-                      task.status === "Completed"
-                        ? "bg-green-100 text-green-600"
-                        : task.status === "In Progress"
-                        ? "bg-blue-100 text-blue-600"
-                        : "bg-yellow-100 text-yellow-600"
-                    }`}
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                    task.status
+                  )}`}
                 >
-                  {task.status}
+                  {getStatusLabel(task.status)}
                 </span>
               </div>
 
