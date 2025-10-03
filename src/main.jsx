@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <MainContainer /> },
       { path: "task", element: <TaskList /> },
-      { path: "task-view", element: <ViewTask /> },
+      { path: "task-view/:id", element: <ViewTask /> },
       { path: "settings", element: <Settings /> },
       { path: "profile-edit", element: <ProfileEdit /> },
     ],
