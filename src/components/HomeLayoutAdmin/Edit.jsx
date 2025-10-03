@@ -8,6 +8,7 @@ const EditTask = () => {
   const { token } = useContext(AuthContext);
 
   const [task, setTask] = useState(null);
+  const [users, setUsers] = useState([]); // ✅ all users for dropdown
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -33,12 +34,39 @@ const EditTask = () => {
     fetchTask();
   }, [id, token]);
 
+  // Fetch all users for assign dropdown
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch(
+          "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=users",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await res.json();
+        if (data?.data) setUsers(data.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [token]);
+
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
 
     try {
+      // ✅ prepare clean payload
+      const body = {
+        ...task,
+        assigned_to_user_id: task.assigned_to?.id || null, // backend expects this
+      };
+      delete body.assigned_to; // remove nested object
+
       const res = await fetch(
         `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&id=${id}`,
         {
@@ -47,10 +75,9 @@ const EditTask = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(task),
+          body: JSON.stringify(body),
         }
       );
-      console.log(task);
 
       if (!res.ok) throw new Error("Failed to update task");
 
@@ -103,17 +130,38 @@ const EditTask = () => {
             onChange={(e) => setTask({ ...task, status: e.target.value })}
             className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
           >
-            {/* pending, in_progress, completed, cancelled */}
             <option value="pending">Pending</option>
             <option value="in_progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
         </div>
 
+        {/* ✅ Assign To User */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Assign To</label>
+          <select
+            value={task.assigned_to?.id || ""} // bind by ID
+            onChange={(e) =>
+              setTask({
+                ...task,
+                assigned_to: { id: e.target.value }, // store only id here
+              })
+            }
+            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+          >
+            <option value="">-- Select User --</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.fullname}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Dates */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Created Date</label>
+            <label className="block text-sm font-medium text-gray-700">Updated Date</label>
             <input
               type="date"
               value={task.createdDate || ""}

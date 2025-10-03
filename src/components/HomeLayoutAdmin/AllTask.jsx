@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { FaArrowRight } from "react-icons/fa";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const AllTask = () => {
   const navigate = useNavigate();
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext); // ✅ get logged-in user + token
 
   const [activeTab, setActiveTab] = useState("All");
   const [tasks, setTasks] = useState([]);
@@ -15,8 +14,10 @@ const AllTask = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+        if (!user?.id) return; // ✅ ensure admin id exists
+
         const res = await fetch(
-          "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks",
+          `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&created_by_user_id=${user.id}`,
           {
             method: "GET",
             headers: {
@@ -31,9 +32,9 @@ const AllTask = () => {
         }
 
         const data = await res.json();
-        // console.log("Fetched tasks:", data);
 
-        // ✅ normalize status (capitalize properly)
+        // console.log(data)
+        // ✅ normalize status
         const normalizedTasks = (data?.data || []).map((task) => ({
           ...task,
           status:
@@ -55,10 +56,10 @@ const AllTask = () => {
       }
     };
 
-    if (token) {
+    if (token && user) {
       fetchTasks();
     }
-  }, [token]);
+  }, [token, user]);
 
   // badge color styles for status
   const getStatusClasses = (status) => {
@@ -97,7 +98,7 @@ const AllTask = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 px-4">
+    <div className="px-2">
       {/* Header */}
       <div className="mb-6 flex justify-between items-start">
         <div>
@@ -150,7 +151,10 @@ const AllTask = () => {
             .map((task) => (
               <div
                 key={task.id}
-                className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between"
+                onClick={() =>
+                  navigate(`/home/admin/view/${task.id}`, { state: task })
+                }
+                className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between cursor-pointer"
               >
                 {/* Header */}
                 <div className="flex justify-between items-center mb-3">
@@ -174,14 +178,13 @@ const AllTask = () => {
 
                 {/* Footer */}
                 <div className="flex justify-between items-center mt-3">
-                  <button
-                    onClick={() =>
-                      navigate(`/home/admin/view/${task.id}`, { state: task })
-                    }
-                    className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
-                  >
-                    View Task <FaArrowRight size={14} />
-                  </button>
+                  {/* ✅ Assigned To */}
+                  <p className="text-sm text-gray-600">
+                    Assigned:{" "}
+                    <span className="font-medium text-gray-800">
+                      {task.assigned_to?.fullname || "Unassigned"}
+                    </span>
+                  </p>
 
                   {/* ✅ Priority badge */}
                   {task.priority && (

@@ -3,12 +3,13 @@ import { X } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router";
+import { body } from "framer-motion/client";
 
 const CreateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
-  const [priority, setPriority] = useState("normal");
+  const [priority, setPriority] = useState("low");
   const [file, setFile] = useState(null);
   const [assignedUser, setAssignedUser] = useState(""); // only user id
   const [users, setUsers] = useState([]);
@@ -73,7 +74,7 @@ const CreateTask = () => {
           "deadline": date,
           "priority": priority // low, medium, high
         }
-
+console.log(priority)
       const res = await fetch(
         "https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks",
         {
@@ -83,7 +84,7 @@ const CreateTask = () => {
 
         }
       );
-
+console.log(data)
       const result = await res.json();
       // console.log("Task API Response:", result);
         alert(result.message);
