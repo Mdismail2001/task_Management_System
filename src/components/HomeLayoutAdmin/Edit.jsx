@@ -18,15 +18,11 @@ const EditTask = () => {
         const res = await fetch(
           `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&id=${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         const data = await res.json();
-        if (data?.data) {
-          setTask(data.data);
-        }
+        if (data?.data) setTask(data.data);
       } catch (error) {
         console.error("Error fetching task:", error);
       } finally {
@@ -46,7 +42,7 @@ const EditTask = () => {
       const res = await fetch(
         `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&id=${id}`,
         {
-          method: "POST", // if API expects POST for update
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -54,14 +50,15 @@ const EditTask = () => {
           body: JSON.stringify(task),
         }
       );
+      console.log(task);
 
       if (!res.ok) throw new Error("Failed to update task");
 
-      alert(" Task updated successfully!");
-      navigate("/home/admin/all-task"); // go back to all tasks
+      alert("✅ Task updated successfully!");
+      navigate("/home/admin/all-task");
     } catch (error) {
       console.error("Update failed:", error);
-      alert(" Failed to update task");
+      alert("❌ Failed to update task");
     } finally {
       setSaving(false);
     }
@@ -106,9 +103,10 @@ const EditTask = () => {
             onChange={(e) => setTask({ ...task, status: e.target.value })}
             className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
           >
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
+            {/* pending, in_progress, completed, cancelled */}
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
           </select>
         </div>
 
@@ -132,21 +130,6 @@ const EditTask = () => {
               className="w-full border rounded-lg px-3 py-2 mt-1"
             />
           </div>
-        </div>
-
-        {/* Progress */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Progress (%)</label>
-          <input
-            type="number"
-            value={task.progress || 0}
-            onChange={(e) =>
-              setTask({ ...task, progress: Math.min(100, Math.max(0, e.target.value)) })
-            }
-            className="w-full border rounded-lg px-3 py-2 mt-1"
-            min="0"
-            max="100"
-          />
         </div>
 
         {/* Submit */}

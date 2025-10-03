@@ -5,11 +5,16 @@ import { AuthContext } from "../components/Provider/AuthProvider";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); //  get login from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+    setSuccessMsg("");
+
     try {
       const email = e.target.email.value;
       const password = e.target.password.value;
@@ -23,21 +28,48 @@ const LoginPage = () => {
         }
       );
 
-      if (!res.ok) throw new Error("Login failed");
+      if (!res.ok) {
+        setErrorMsg("Invalid email or password.");
+        return;
+      }
 
       const data = await res.json();
 
-      //  use context login so state updates immediately
+      // update context state
       login(data.user, data.token);
+      setSuccessMsg("Login successful! Redirecting...");
 
-      //  navigate by role
+      // if user is admin -> check if tasks exist
       if (data.user.role === "admin") {
-        navigate("/home/admin");
+        const taskRes = await fetch(
+          `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&assigned_to_user_id=${data.user.id}`,
+          {
+            headers: { Authorization: `Bearer ${data.token}` },
+          }
+        );
+        if (!taskRes.ok) {
+          setErrorMsg("Failed to fetch tasks.");
+          return;
+        }
+
+        const tasks = await taskRes.json();
+
+        setTimeout(() => {
+          if (tasks && tasks.length > 0) {
+            navigate("/home/admin/all-task");
+          } else {
+            navigate("/home/admin");
+          }
+        }, 1000); // wait a bit so user sees success message
       } else {
-        navigate("/home/user");
+        // normal user
+        setTimeout(() => {
+          navigate("/home/user");
+        }, 1000);
       }
     } catch (err) {
       console.error(err);
+      setErrorMsg("Something went wrong. Please try again later.");
     }
   };
 
@@ -47,6 +79,18 @@ const LoginPage = () => {
       <div className="col-span-12 lg:col-span-6 flex justify-center items-center bg-gray-50">
         <div className="w-full max-w-sm p-8">
           <h2 className="text-2xl font-bold mb-6">Welcome Back</h2>
+
+          {/* ✅ Show Messages */}
+          {errorMsg && (
+            <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg">
+              {errorMsg}
+            </div>
+          )}
+          {successMsg && (
+            <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded-lg">
+              {successMsg}
+            </div>
+          )}
 
           <form className="space-y-4" onSubmit={handleLogin}>
             {/* Email */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
-import { AuthContext } from "../Provider/AuthProvider"; 
+import { AuthContext } from "../Provider/AuthProvider";
 
 const AllTask = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const AllTask = () => {
         }
 
         const data = await res.json();
-        console.log("Fetched tasks:", data);
+        // console.log("Fetched tasks:", data);
 
         // ✅ normalize status (capitalize properly)
         const normalizedTasks = (data?.data || []).map((task) => ({
@@ -47,8 +47,6 @@ const AllTask = () => {
               : task.status,
         }));
 
-        console.log(normalizedTasks)
-
         setTasks(normalizedTasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -62,7 +60,7 @@ const AllTask = () => {
     }
   }, [token]);
 
-  // badge color styles
+  // badge color styles for status
   const getStatusClasses = (status) => {
     switch (status) {
       case "Pending":
@@ -73,6 +71,20 @@ const AllTask = () => {
         return "bg-green-100 text-green-800 border border-green-300";
       default:
         return "bg-gray-100 text-gray-800 border border-gray-300";
+    }
+  };
+
+  // badge color styles for priority
+  const getPriorityClasses = (priority) => {
+    switch ((priority || "").toLowerCase()) {
+      case "high":
+        return "bg-red-100 text-red-700 border border-red-300";
+      case "medium":
+        return "bg-orange-100 text-orange-700 border border-orange-300";
+      case "low":
+        return "bg-green-100 text-green-700 border border-green-300";
+      default:
+        return "bg-gray-100 text-gray-700 border border-gray-300";
     }
   };
 
@@ -161,12 +173,27 @@ const AllTask = () => {
                 </div>
 
                 {/* Footer */}
-                <button
-                  onClick={() => navigate(`/home/admin/view/${task.id}`, { state: task })}
-                  className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
-                >
-                  View Task <FaArrowRight size={14} />
-                </button>
+                <div className="flex justify-between items-center mt-3">
+                  <button
+                    onClick={() =>
+                      navigate(`/home/admin/view/${task.id}`, { state: task })
+                    }
+                    className="flex items-center gap-2 text-[#3755db] font-medium hover:text-blue-600 transition"
+                  >
+                    View Task <FaArrowRight size={14} />
+                  </button>
+
+                  {/* ✅ Priority badge */}
+                  {task.priority && (
+                    <span
+                      className={`px-3 py-1 text-xs font-medium rounded-full ${getPriorityClasses(
+                        task.priority
+                      )}`}
+                    >
+                      {task.priority}
+                    </span>
+                  )}
+                </div>
               </div>
             ))}
         </div>
