@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { AuthContext } from "../Provider/AuthProvider"; // Assuming you have this
+import { AuthContext } from "../Provider/AuthProvider";
 
 const TaskList = () => {
   const navigate = useNavigate();
   const { user, token } = useContext(AuthContext);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Utility: map API status -> label + colors
+  const [tasks, setTasks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+
   const getStatusLabel = (status) => {
     switch (status) {
       case "completed":
@@ -31,42 +33,50 @@ const TaskList = () => {
     }
   };
 
-  useEffect(() => {
+  const fetchTasks = async (pageNum = 1) => {
     if (!user) return;
-    const fetchTasks = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&assigned_to_user_id=${user.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await res.json();
-        // console.log(data);
-        if (data?.data) {
-          setTasks(data.data);
-        } else {
-          setTasks([]);
+
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&assigned_to_user_id=${user.id}&page=${pageNum}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        setLoading(false);
+      );
+
+      const data = await res.json();
+      const newTasks = data?.data || [];
+      console.log(data);
+
+      if (newTasks.length === 0) {
+        setHasMore(false);
+      } else {
+        setTasks((prev) => [...prev, ...newTasks]);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchTasks();
-  }, [user, token]);
+  useEffect(() => {
+    if (user) {
+      fetchTasks(page);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, page]);
 
-  if (loading) return <p className="p-6">Loading tasks...</p>;
+  if (loading && tasks.length === 0)
+    return <p className="p-6">Loading tasks...</p>;
 
   return (
-    <div>
-      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tasks.length > 0 ? (
           tasks.map((task) => (
             <div
@@ -91,12 +101,21 @@ const TaskList = () => {
                 {task.title}
               </h3>
 
-              {/* Bottom Row: Priority */}
-              <div className="flex justify-end text-sm font-medium text-gray-600">
-                Priority:{" "}
-                <span className="ml-1 text-[rgb(55,85,219)]">
-                  {task.priority || "low"}
-                </span>
+              {/* Bottom Row: Priority (Left) + Assigned To (Right) */}
+              <div className="flex justify-between items-center text-sm font-medium text-gray-600">
+                <div>
+                  Priority:{" "}
+                  <span className="ml-1 text-[rgb(55,85,219)]">
+                    {task.priority || "low"}
+                  </span>
+                </div>
+
+                <div>
+                  Assigned to:{" "}
+                  <span className="text-[rgb(55,85,219)]">
+                    {task.assigned_to?.fullname || "Unknown"}
+                  </span>
+                </div>
               </div>
             </div>
           ))
@@ -106,6 +125,22 @@ const TaskList = () => {
           </p>
         )}
       </div>
+
+      {/* Load More Button */}
+      {hasMore && !loading && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            className="bg-[rgb(55,85,219)] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Load More
+          </button>
+        </div>
+      )}
+
+      {loading && tasks.length > 0 && (
+        <p className="text-center text-gray-500 mt-4">Loading more...</p>
+      )}
     </div>
   );
 };

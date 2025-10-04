@@ -4,14 +4,14 @@ import { useNavigate, useParams } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const ViewTask = () => {
+  const [file, setFile] = useState(null);
   const [task, setTask] = useState(null);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(); 
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { token } = useContext(AuthContext);
 
-  // ✅ Fetch task details
   useEffect(() => {
     const fetchTask = async () => {
       try {
@@ -31,7 +31,7 @@ const ViewTask = () => {
         const data = await res.json();
         if (data?.data) {
           setTask(data.data);
-          setStatus(data.data.status || "pending"); // ✅ use correct backend value
+          setStatus(data.data.status || "Pending"); 
         }
       } catch (err) {
         console.error("Error fetching task:", err);
@@ -41,7 +41,8 @@ const ViewTask = () => {
     if (token) fetchTask();
   }, [id, token]);
 
-  // ✅ Update task status only
+  // const handleFileChange = (e) => setFile(e.target.files[0]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,29 +55,27 @@ const ViewTask = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status }), // send exact backend key
+          body: JSON.stringify({ status }), // ✅ only update status
         }
       );
-
-      console.log("Updating:", status);
+      console.log(status,id)
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-      // console.log("Task updated:", data);
+      console.log("Task updated:", data);
 
-      alert("✅ Task status updated successfully!");
-      navigate(-1);
+      alert("Task status updated successfully ");
+      navigate(-1); // go back after update
     } catch (err) {
       console.error("Error updating task:", err);
-      alert("❌ Failed to update task");
+      alert("Failed to update task ");
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative max-w-3xl w-full bg-white shadow-lg rounded-xl p-6">
-        {/* Close */}
         <button
           onClick={() => navigate(-1)}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -84,29 +83,24 @@ const ViewTask = () => {
           <X size={20} />
         </button>
 
-        {/* Task Details */}
         {task ? (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-2">{task.title}</h2>
-            <p className="text-gray-600 mb-2">{task.description}</p>
-            <span className="text-sm text-gray-500 mb-2 block">
+            <span className="text-sm text-gray-500 mb-2">
               Deadline: {task.deadline}
             </span>
-            <span className="text-sm text-gray-500 block">
-              Current Status:{" "}
-              <span className="font-semibold capitalize">{task.status}</span>
-            </span>
+            <p className="text-gray-600 mb-2">
+              Description:<br />{task.description}
+            </p>
           </div>
         ) : (
           <p className="text-gray-500">Loading task details...</p>
         )}
 
-        {/* Update Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Status Dropdown */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Update Status
+              Status
             </label>
             <select
               value={status}
