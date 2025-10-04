@@ -96,7 +96,7 @@ const EditTask = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
-      <h1 className="text-2xl font-bold text-blue-900 mb-6">Edit Task #{id}</h1>
+      <h1 className="text-2xl font-bold text-blue-900 mb-6">Edit Task #:{id}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
         <div>
@@ -105,7 +105,7 @@ const EditTask = () => {
             type="text"
             value={task.title || ""}
             onChange={(e) => setTask({ ...task, title: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            className="w-full shadow rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
             required
           />
         </div>
@@ -116,7 +116,7 @@ const EditTask = () => {
           <textarea
             value={task.description || ""}
             onChange={(e) => setTask({ ...task, description: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            className="w-full shadow rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
             rows="4"
             required
           />
@@ -128,7 +128,7 @@ const EditTask = () => {
           <select
             value={task.status || ""}
             onChange={(e) => setTask({ ...task, status: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            className="w-full shadow rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
           >
             <option value="pending">Pending</option>
             <option value="in_progress">In Progress</option>
@@ -147,7 +147,7 @@ const EditTask = () => {
                 assigned_to: { id: e.target.value }, // store only id here
               })
             }
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
+            className="w-full shadow rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-blue-300"
           >
             <option value="">-- Select User --</option>
             {users.map((user) => (
@@ -166,7 +166,7 @@ const EditTask = () => {
               type="date"
               value={task.createdDate || ""}
               onChange={(e) => setTask({ ...task, createdDate: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 mt-1"
+              className="w-full shadow rounded-lg px-3 py-2 mt-1"
             />
           </div>
           <div>
@@ -175,7 +175,7 @@ const EditTask = () => {
               type="date"
               value={task.dueDate || ""}
               onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 mt-1"
+              className="w-full shadow rounded-lg px-3 py-2 mt-1"
             />
           </div>
         </div>

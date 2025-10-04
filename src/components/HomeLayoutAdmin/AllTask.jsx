@@ -1,67 +1,78 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const AllTask = () => {
   const navigate = useNavigate();
-  const { token, user } = useContext(AuthContext); // ✅ get logged-in user + token
+  const { token, user } = useContext(AuthContext);
+  const { searchQuery } = useOutletContext(); // 🔍 get search text
 
   const [activeTab, setActiveTab] = useState("All");
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Fetch tasks from API
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        if (!user?.id) return; // ✅ ensure admin id exists
+  const fetchTasks = async (pageNum = 1) => {
+    if (!user?.id) return;
+    setLoading(true);
 
-        const res = await fetch(
-          `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&created_by_user_id=${user.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch tasks");
+    try {
+      const res = await fetch(
+        `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&created_by_user_id=${user.id}&page=${pageNum}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const data = await res.json();
+      if (!res.ok) throw new Error("Failed to fetch tasks");
 
-        // console.log(data)
-        // ✅ normalize status
-        const normalizedTasks = (data?.data || []).map((task) => ({
-          ...task,
-          status:
-            task.status?.toLowerCase() === "pending"
-              ? "Pending"
-              : task.status?.toLowerCase() === "in_progress" ||
-                task.status?.toLowerCase() === "in progress"
-              ? "In Progress"
-              : task.status?.toLowerCase() === "completed"
-              ? "Completed"
-              : task.status,
-        }));
+      const data = await res.json();
+      const newTasks = data?.data || [];
 
-        setTasks(normalizedTasks);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const normalizedTasks = newTasks.map((task) => ({
+        ...task,
+        status:
+          task.status?.toLowerCase() === "pending"
+            ? "Pending"
+            : task.status?.toLowerCase() === "in_progress" ||
+              task.status?.toLowerCase() === "in progress"
+            ? "In Progress"
+            : task.status?.toLowerCase() === "completed"
+            ? "Completed"
+            : task.status,
+      }));
 
-    if (token && user) {
-      fetchTasks();
+      setTasks((prev) => [...prev, ...normalizedTasks]);
+
+      if (data?.pagination?.current_page >= data?.pagination?.total_pages)
+        setHasMore(false);
+      else setHasMore(true);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (token && user) fetchTasks(1);
   }, [token, user]);
 
-  // badge color styles for status
+  const filteredTasks = tasks.filter(
+    (task) =>
+      (activeTab === "All" || task.status === activeTab) &&
+      (task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.assigned_to?.fullname
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase()))
+  );
+
   const getStatusClasses = (status) => {
     switch (status) {
       case "Pending":
@@ -75,7 +86,6 @@ const AllTask = () => {
     }
   };
 
-  // badge color styles for priority
   const getPriorityClasses = (priority) => {
     switch ((priority || "").toLowerCase()) {
       case "high":
@@ -89,7 +99,6 @@ const AllTask = () => {
     }
   };
 
-  // counts for tabs
   const counts = {
     All: tasks.length,
     Pending: tasks.filter((t) => t.status === "Pending").length,
@@ -139,16 +148,15 @@ const AllTask = () => {
         ))}
       </div>
 
-      {/* Task Cards */}
-      {loading ? (
+      {/* Tasks */}
+      {loading && tasks.length === 0 ? (
         <p className="text-center text-gray-600">Loading tasks...</p>
-      ) : tasks.length === 0 ? (
+      ) : filteredTasks.length === 0 ? (
         <p className="text-center text-gray-600">No tasks found.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tasks
-            .filter((task) => activeTab === "All" || task.status === activeTab)
-            .map((task) => (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTasks.map((task) => (
               <div
                 key={task.id}
                 onClick={() =>
@@ -156,7 +164,6 @@ const AllTask = () => {
                 }
                 className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between cursor-pointer"
               >
-                {/* Header */}
                 <div className="flex justify-between items-center mb-3">
                   <p className="font-semibold text-gray-800">#{task.id}</p>
                   <span
@@ -168,25 +175,19 @@ const AllTask = () => {
                   </span>
                 </div>
 
-                {/* Body */}
                 <div className="mb-4 flex-1">
                   <h2 className="text-lg font-semibold text-gray-900">
                     {task.title}
                   </h2>
-                  <p className="text-gray-600 text-sm">{task.description}</p>
                 </div>
 
-                {/* Footer */}
                 <div className="flex justify-between items-center mt-3">
-                  {/* ✅ Assigned To */}
                   <p className="text-sm text-gray-600">
                     Assigned:{" "}
                     <span className="font-medium text-gray-800">
                       {task.assigned_to?.fullname || "Unassigned"}
                     </span>
                   </p>
-
-                  {/* ✅ Priority badge */}
                   {task.priority && (
                     <span
                       className={`px-3 py-1 text-xs font-medium rounded-full ${getPriorityClasses(
@@ -199,7 +200,24 @@ const AllTask = () => {
                 </div>
               </div>
             ))}
-        </div>
+          </div>
+
+          {hasMore && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => {
+                  const nextPage = page + 1;
+                  setPage(nextPage);
+                  fetchTasks(nextPage);
+                }}
+                disabled={loading}
+                className="bg-[#3755db] text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
+              >
+                {loading ? "Loading..." : "See More"}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
