@@ -3,15 +3,18 @@ import { AuthContext } from "../Provider/AuthProvider";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-const RightNav = ({ setShowPopup, userImage }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const RightNav = ({ setShowPopup, userImage, setSelectedDate }) => {
   const [isActive, setIsActive] = useState(true);
   const { user } = useContext(AuthContext);
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date); // ✅ lift state up to Root
+  };
+
   return (
-    <div className="flex flex-col gap-6  bg-[#f5f7fc] h-screen pr-4 py-4">
+    <div className="flex flex-col gap-6 bg-[#f5f7fc] h-screen pr-4 py-4">
       {/* User Profile */}
-      <div className="flex flex-col items-center bg-white rounded  p-4">
+      <div className="flex flex-col items-center bg-white rounded p-4">
         <div className="relative">
           <img
             className="w-[90px] h-[90px] rounded-xl cursor-pointer"
@@ -34,14 +37,14 @@ const RightNav = ({ setShowPopup, userImage }) => {
 
         <button
           onClick={() => setShowPopup(true)}
-          className="mt-4 w-[108px]  h-[39px] bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+          className="mt-4 w-[108px] h-[39px] bg-[#3755db] text-white rounded-lg shadow-md hover:bg-blue-600 transition"
         >
           My Profile
         </button>
       </div>
 
-      {/* Calendar Buttons */}
-      <div className="flex flex-col bg-[#f5f7fc] py-4  rounded-xl">
+      {/* Calendar */}
+      <div className="flex flex-col bg-[#f5f7fc] py-4 rounded-xl">
         <div className="grid grid-cols-2 gap-2 w-full mb-3">
           <button className="px-3 py-2 text-sm rounded-lg bg-[#3755db] text-white hover:bg-blue-600 transition">
             Calendar
@@ -51,13 +54,11 @@ const RightNav = ({ setShowPopup, userImage }) => {
           </button>
         </div>
 
-        {/* Calendar with arrows removed */}
         <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
+          onChange={handleDateChange} // ✅ trigger Root update
           className="react-calendar text-sm mt-5 rounded"
-          nextLabel={null}   // removes right arrow
-          prevLabel={null}   // removes left arrow
+          nextLabel={null}
+          prevLabel={null}
         />
       </div>
     </div>

@@ -9,7 +9,8 @@ const RootAdmin = () => {
   const [userImage, setUserImage] = useState(
     "/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg"
   );
-  const [searchQuery, setSearchQuery] = useState(""); // 🔍 NEW: Search State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null); // ✅ NEW
   const fileInputRef = useRef(null);
 
   const handleUploadClick = () => fileInputRef.current.click();
@@ -36,17 +37,23 @@ const RootAdmin = () => {
 
         {/* Main Content */}
         <main className="col-span-8 h-screen overflow-y-auto bg-[#f5f7fc]">
-          <header className="col-span-7 sticky top-0 z-50 bg-[#f5f7fc] ">
-            <Navbar setSearchQuery={setSearchQuery} /> {/* 🔍 Pass Setter */}
+          <header className="col-span-7 sticky top-0 z-50 bg-[#f5f7fc]">
+            <Navbar setSearchQuery={setSearchQuery} />
           </header>
+
+          {/* ✅ Pass both searchQuery & selectedDate */}
           <div className="p-4">
-            <Outlet context={{ searchQuery }} /> {/* 🔍 Pass to Outlet */}
+            <Outlet context={{ searchQuery, selectedDate }} />
           </div>
         </main>
 
         {/* Right Sidebar */}
         <section className="col-span-2 sticky top-0 h-screen overflow-y-auto">
-          <RightNav setShowPopup={setShowPopup} userImage={userImage} />
+          <RightNav
+            setShowPopup={setShowPopup}
+            userImage={userImage}
+            setSelectedDate={setSelectedDate} // ✅ send setter
+          />
         </section>
       </div>
 

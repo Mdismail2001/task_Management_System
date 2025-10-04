@@ -5,7 +5,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 const AllTask = () => {
   const navigate = useNavigate();
   const { token, user } = useContext(AuthContext);
-  const { searchQuery } = useOutletContext(); // 🔍 get search text
+  const { searchQuery, selectedDate } = useOutletContext(); // ✅ get both
 
   const [activeTab, setActiveTab] = useState("All");
   const [tasks, setTasks] = useState([]);
@@ -21,7 +21,6 @@ const AllTask = () => {
       const res = await fetch(
         `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&created_by_user_id=${user.id}&page=${pageNum}`,
         {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -47,7 +46,8 @@ const AllTask = () => {
             : task.status,
       }));
 
-      setTasks((prev) => [...prev, ...normalizedTasks]);
+      if (pageNum === 1) setTasks(normalizedTasks);
+      else setTasks((prev) => [...prev, ...normalizedTasks]);
 
       if (data?.pagination?.current_page >= data?.pagination?.total_pages)
         setHasMore(false);
@@ -63,15 +63,33 @@ const AllTask = () => {
     if (token && user) fetchTasks(1);
   }, [token, user]);
 
-  const filteredTasks = tasks.filter(
-    (task) =>
-      (activeTab === "All" || task.status === activeTab) &&
-      (task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.assigned_to?.fullname
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase()))
-  );
+  // ✅ Format selected date (YYYY-MM-DD)
+  const formatDate = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const selected = formatDate(selectedDate);
+
+  // ✅ Apply both search and date filtering
+  const filteredTasks = tasks.filter((task) => {
+    const q = searchQuery.toLowerCase();
+
+    const matchesSearch =
+      task.title.toLowerCase().includes(q) ||
+      task.description?.toLowerCase().includes(q) ||
+      task.assigned_to?.fullname?.toLowerCase().includes(q);
+
+    const matchesDate = selected
+      ? task.deadline?.startsWith(selected)
+      : true; // no date selected → show all
+
+    return matchesSearch && matchesDate && (activeTab === "All" || task.status === activeTab);
+  });
 
   const getStatusClasses = (status) => {
     switch (status) {
@@ -148,11 +166,13 @@ const AllTask = () => {
         ))}
       </div>
 
-      {/* Tasks */}
+      {/* Task Cards */}
       {loading && tasks.length === 0 ? (
         <p className="text-center text-gray-600">Loading tasks...</p>
       ) : filteredTasks.length === 0 ? (
-        <p className="text-center text-gray-600">No tasks found.</p>
+        <p className="text-center text-gray-600">
+          No tasks found for the selected date.
+        </p>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
