@@ -88,10 +88,11 @@ const TaskList = () => {
               <div
                 key={task.id}
                 onClick={() => navigate(`/home/user/task-view/${task.id}`)}
-                className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between h-40 border border-gray-200 cursor-pointer hover:shadow-lg transition"
+                className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between h-44 border border-gray-200 cursor-pointer hover:shadow-lg transition"
               >
+                {/* Header Row */}
                 <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span className="font-semibold">#{task.id}</span>
+                  <span className="font-semibold">Task Id: {task.id}</span>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       task.status === "completed"
@@ -105,19 +106,21 @@ const TaskList = () => {
                   </span>
                 </div>
 
+                {/* Title */}
                 <h3 className="text-lg font-bold text-gray-800 text-center flex-1 flex items-center">
-                  {task.title}
+                  Title: {task.title}
                 </h3>
 
-                <div className="flex justify-between items-center text-sm font-medium text-gray-600">
+                {/* ✅ Priority and Due Date vertically aligned */}
+                <div className="flex flex-col text-sm font-medium text-gray-600 mt-2 space-y-1">
                   <div>
-                    Priority:{" "}
-                    <span className="ml-1 text-[rgb(55,85,219)]">
+                    <span className="font-semibold">Priority:</span>{" "}
+                    <span className="text-[rgb(55,85,219)]">
                       {task.priority || "low"}
                     </span>
                   </div>
                   <div>
-                    Due Date:{" "}
+                    <span className="font-semibold">Due Date:</span>{" "}
                     <span className="text-[rgb(55,85,219)]">
                       {task.deadline || "Unknown"}
                     </span>
