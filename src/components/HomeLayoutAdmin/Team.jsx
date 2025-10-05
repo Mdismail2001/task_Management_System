@@ -80,10 +80,10 @@ const teamMembers = [
 const Team = () => {
     const navigate = useNavigate();
   return (
-    <div className="min-h-screen  p-2 bg-[#f5f7fc]">
+    <div className="min-h-screen  px-6 bg-[#f5f7fc]">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Our Team</h1>
+        <h1 className="text-3xl font-bold text-blue-900">Our Team</h1>
         <button onClick={()=> navigate("/auth/register")} className="flex items-center gap-2 bg-[#3755db] text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
           <Plus size={18} /> Add Member
         </button>

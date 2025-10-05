@@ -125,7 +125,7 @@ const AllTask = () => {
   };
 
   return (
-    <div className="px-2">
+    <div className="px-6">
       {/* Header */}
       <div className="mb-6 flex justify-between items-start">
         <div>
@@ -185,7 +185,7 @@ const AllTask = () => {
                 className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition flex flex-col justify-between cursor-pointer"
               >
                 <div className="flex justify-between items-center mb-3">
-                  <p className="font-semibold text-gray-800">#{task.id}</p>
+                  <p className="font-semibold text-gray-800">Task id: {task.id}</p>
                   <span
                     className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusClasses(
                       task.status
@@ -203,7 +203,7 @@ const AllTask = () => {
 
                 <div className="flex justify-between items-center mt-3">
                   <p className="text-sm text-gray-600">
-                    Assigned:{" "}
+                    Assigned: {" "}
                     <span className="font-medium text-gray-800">
                       {task.assigned_to?.fullname || "Unassigned"}
                     </span>

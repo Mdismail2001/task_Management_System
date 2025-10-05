@@ -107,7 +107,7 @@ const TaskList = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg font-bold text-gray-800 text-center flex-1 flex items-center">
+                <h3 className="text-lg font-bold text-gray-800  flex-1 flex items-center">
                   Title: {task.title}
                 </h3>
 

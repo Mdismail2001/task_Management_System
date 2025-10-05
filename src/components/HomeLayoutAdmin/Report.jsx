@@ -22,7 +22,7 @@ const projectData = [
 
 const Report = () => {
   return (
-    <div className="min-h-screen bg-[#f6f8fc] p-2">
+    <div className="min-h-screen bg-[#f6f8fc] px-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10">
         <div>

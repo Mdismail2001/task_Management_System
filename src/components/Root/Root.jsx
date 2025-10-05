@@ -39,7 +39,7 @@ const Root = () => {
           </header>
 
           {/* ✅ Pass both searchQuery and selectedDate */}
-          <div className="bg-[#f5f7fc]">
+          <div className="bg-[#f5f7fc] ">
             <Outlet context={{ searchQuery, selectedDate }} />
           </div>
         </main>

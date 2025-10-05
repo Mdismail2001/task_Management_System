@@ -3,8 +3,8 @@ import { User, Mail, Lock, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ProfileEdit = () => {
-  const [fullName, setFullName] = useState("John Doe");
-  const [email, setEmail] = useState("johndoe@example.com");
+  const [fullName, setFullName] = useState("admin");
+  const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 

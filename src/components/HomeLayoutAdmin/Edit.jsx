@@ -95,8 +95,8 @@ const EditTask = () => {
   if (!task) return <p className="text-center mt-10 text-red-500">Task not found</p>;
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
-      <h1 className="text-2xl font-bold text-blue-900 mb-6">Edit Task #:{id}</h1>
+    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      <h1 className="text-2xl font-bold text-blue-900 mb-6">Edit Task: {id}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
         <div>

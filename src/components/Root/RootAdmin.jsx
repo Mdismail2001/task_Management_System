@@ -42,7 +42,7 @@ const RootAdmin = () => {
           </header>
 
           {/* ✅ Pass both searchQuery & selectedDate */}
-          <div className="p-4">
+          <div className="p-">
             <Outlet context={{ searchQuery, selectedDate }} />
           </div>
         </main>
