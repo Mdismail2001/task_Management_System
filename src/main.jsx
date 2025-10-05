@@ -28,6 +28,8 @@ import TaskList from "./components/HomeLayout/TaskList.jsx";
 import CoverPage from "./pages/CoverPage.jsx";
 import DeleteTask from "./components/HomeLayoutAdmin/DeleteTask.jsx";
 import LogoutPage from "./components/ShareComponent/LogoutPage.jsx";
+import Team from "./components/HomeLayoutAdmin/Team.jsx";
+import Report from "./components/HomeLayoutAdmin/Report.jsx";
 
 const router = createBrowserRouter([
   // Cover page as root
@@ -72,6 +74,8 @@ const router = createBrowserRouter([
       { path: "profile-edit", element: <ProfileEdit /> },
       { path: "delete-task/:id", element:<DeleteTask/>},
       { path: "logout", element: <LogoutPage/>},
+      { path: "team", element:<Team/>},
+      { path: "report", element:<Report/>}
     ],
   },
 ]);

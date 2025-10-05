@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { FaTasks, FaCog } from "react-icons/fa";
+import { FaTasks, FaCog, FaChartBar, FaUsers } from "react-icons/fa";
 import { MdOutlineGridView } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
@@ -29,7 +29,8 @@ const LeftNav = () => {
           { to: "/home/admin", label: "Overview", icon: MdOutlineGridView, exact: true },
           { to: "/home/admin/all-task", label: "Tasks", icon: FaTasks },
           { to: "/home/admin/settings", label: "Settings", icon: FaCog },
-        ];
+          { to: "/home/admin/team", label: "Team", icon: FaUsers },
+          { to: "/home/admin/report", label: "Report", icon: FaChartBar },        ];
 
   return (
     <div className="grid grid-cols-12 bg-white shadow-lg">
