@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management System - All Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-link {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .nav-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .diagram-section {
+            margin-bottom: 80px;
+            scroll-margin-top: 100px;
+        }
+        
+        .diagram-section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .diagram-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .diagram-description h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .diagram-description ul {
+            margin-left: 20px;
+        }
+        
+        .diagram-description li {
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .diagram-wrapper {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Project Management System</h1>
+            <p>Complete Technical Architecture & Documentation</p>
+            <div style="margin-top: 15px;">
+                <span class="badge">REST API</span>
+                <span class="badge">MySQL</span>
+                <span class="badge">JWT Auth</span>
+                <span class="badge">RBAC</span>
+            </div>
+        </div>
+        
+        <div class="nav">
+            <h3>📋 Quick Navigation</h3>
+            <div class="nav-links">
+                <a href="#diagram1" class="nav-link">1. Database Schema</a>
+                <a href="#diagram2" class="nav-link">2. RBAC Flow</a>
+                <a href="#diagram3" class="nav-link">3. Workflow Sequence</a>
+                <a href="#diagram4" class="nav-link">4. API Structure</a>
+                <a href="#diagram5" class="nav-link">5. Permission Matrix</a>
+                <a href="#diagram6" class="nav-link">6. System Architecture</a>
+                <a href="#diagram7" class="nav-link">7. Data Flow Example</a>
+                <a href="#diagram8" class="nav-link">8. Project Lifecycle</a>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Diagram 1 -->
+            <div id="diagram1" class="diagram-section">
+                <h2>1. Database Schema (ERD)</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Shows the complete database structure with relationships between tables.</p>
+                    <h3>Key Tables</h3>
+                    <ul>
+                        <li><strong>users</strong> - System users with roles (admin, project_manager, developer, member)</li>
+                        <li><strong>projects</strong> - Projects created by project managers</li>
+                        <li><strong>project_members</strong> - Junction table with project-specific roles</li>
+                        <li><strong>tasks</strong> - Tasks within projects assigned to team members</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+erDiagram
+    USERS ||--o{ PROJECTS : creates
+    USERS ||--o{ PROJECT_MEMBERS : "is member"
+    USERS ||--o{ TASKS : "creates/assigned"
+    PROJECTS ||--o{ PROJECT_MEMBERS : has
+    PROJECTS ||--o{ TASKS : contains
+    
+    USERS {
+        int id PK
+        string username UK
+        string email UK
+        string password
+        enum role
+        timestamp created_at
+    }
+    
+    PROJECTS {
+        int id PK
+        string name
+        text description
+        int created_by_user_id FK
+        enum status
+        timestamp created_at
+    }
+    
+    PROJECT_MEMBERS {
+        int id PK
+        int project_id FK
+        int user_id FK
+        string project_role
+        timestamp added_at
+    }
+    
+    TASKS {
+        int id PK
+        int project_id FK
+        string title
+        enum status
+        int assigned_to_user_id FK
+        int created_by_user_id FK
+        datetime deadline
+        enum priority
+    }
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 2 -->
+            <div id="diagram2" class="diagram-section">
+                <h2>2. Role-Based Access Control Flow</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Visualizes how different user roles access different features in the system.</p>
+                    <h3>Roles</h3>
+                    <ul>
+                        <li><strong>Admin</strong> - Full system access, sees everything</li>
+                        <li><strong>Project Manager</strong> - Creates projects, manages own projects</li>
+                        <li><strong>Developer</strong> - Views assigned tasks, updates own status</li>
+                        <li><strong>Member</strong> - Views assigned tasks, updates own status</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+graph TD
+    A[User Login] --> B{Check System Role}
+    
+    B -->|Admin| C[Admin Dashboard]
+    B -->|Project Manager| D[PM Dashboard]
+    B -->|Developer| E[Developer Dashboard]
+    B -->|Member| F[Member Dashboard]
+    
+    C --> C1[View All Projects]
+    C --> C2[View All Tasks]
+    C --> C3[Manage Any Project]
+    
+    D --> D1[View Own Projects]
+    D --> D2[Create Projects]
+    D --> D3{Is Project Creator?}
+    D3 -->|Yes| D4[Manage Project]
+    D3 -->|No| D5[View Only]
+    
+    E --> E1[View Assigned Projects]
+    E --> E2[View Assigned Tasks]
+    E --> E3{Task Assigned?}
+    E3 -->|Yes| E4[Update Status Only]
+    
+    F --> F1[View Assigned Projects]
+    F --> F2[View Assigned Tasks]
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 3 -->
+            <div id="diagram3" class="diagram-section">
+                <h2>3. Typical Project Workflow Sequence</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Shows the step-by-step interaction between users and the system during a typical project lifecycle.</p>
+                    <h3>Phases</h3>
+                    <ul>
+                        <li>Project Setup - PM creates project</li>
+                        <li>Team Building - Add members with roles</li>
+                        <li>Task Creation - PM creates and assigns tasks</li>
+                        <li>Task Execution - Team members work on tasks</li>
+                        <li>Monitoring - PM tracks progress</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+sequenceDiagram
+    actor PM as Project Manager
+    actor Dev as Developer
+    participant API as REST API
+    participant DB as Database
+    
+    PM->>API: POST /register
+    API->>DB: Create User
+    API-->>PM: Token + User Info
+    
+    PM->>API: POST /projects
+    API->>DB: Insert Project
+    API-->>PM: Project Created
+    
+    Dev->>API: POST /register
+    API-->>Dev: Token
+    
+    PM->>API: POST /project-members
+    API->>DB: Add Member
+    API-->>PM: Member Added
+    
+    PM->>API: POST /tasks
+    API->>DB: Create Task
+    API-->>PM: Task Created
+    
+    Dev->>API: GET /tasks
+    API->>DB: Get Assigned Tasks
+    API-->>Dev: Task List
+    
+    Dev->>API: PUT /tasks/1
+    API->>DB: Update Status
+    API-->>Dev: Status Updated
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 4 -->
+            <div id="diagram4" class="diagram-section">
+                <h2>4. API Endpoint Structure</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Shows all API endpoints organized by category with permission checks.</p>
+                    <h3>Categories</h3>
+                    <ul>
+                        <li>Public Endpoints - No authentication required</li>
+                        <li>User Endpoints - Basic user operations</li>
+                        <li>Project Endpoints - Project CRUD with role checks</li>
+                        <li>Member Endpoints - Team member management</li>
+                        <li>Task Endpoints - Task management with complex permissions</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+graph TB
+    A1[POST /register]
+    A2[POST /login]
+    A3[GET /users]
+    
+    C1[GET /projects] --> C1A{Role}
+    C1A -->|Admin| C1B[All]
+    C1A -->|Others| C1C[Own]
+    
+    C2[POST /projects] --> C2A{Role}
+    C2A -->|Admin/PM| C2B[Create]
+    C2A -->|Dev| C2C[Forbidden]
+    
+    E1[GET /tasks] --> E1A{Role}
+    E1A -->|Admin| E1B[All]
+    E1A -->|PM| E1C[Project]
+    E1A -->|Dev| E1D[Assigned]
+    
+    E4[PUT /tasks] --> E4A{Check}
+    E4A -->|Creator| E4B[Update All]
+    E4A -->|Assigned| E4C[Status Only]
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 5 -->
+            <div id="diagram5" class="diagram-section">
+                <h2>5. Permission Matrix by Role</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Clear visualization showing what each role can and cannot do in the system.</p>
+                    <h3>Legend</h3>
+                    <ul>
+                        <li><strong>Yes</strong> - Full access to feature</li>
+                        <li><strong>No</strong> - Access denied</li>
+                        <li><strong>Own Only</strong> - Only for projects they created</li>
+                        <li><strong>Own Projects</strong> - Only within their projects</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+graph TB
+    Admin[Admin]
+    PM[Project Manager]
+    Dev[Developer]
+    Member[Member]
+    
+    P1[Create Project]
+    P2[View All Projects]
+    M1[Add Members]
+    T1[Create Tasks]
+    T3[View Own Tasks]
+    T5[Update Own Status]
+    
+    Admin -->|Yes| P1
+    Admin -->|Yes| P2
+    Admin -->|Yes| M1
+    Admin -->|Yes| T1
+    
+    PM -->|Yes| P1
+    PM -->|No| P2
+    PM -->|Own Projects| M1
+    PM -->|Own Projects| T1
+    
+    Dev -->|No| P1
+    Dev -->|No| M1
+    Dev -->|Yes| T3
+    Dev -->|Yes| T5
+    
+    Member -->|No| P1
+    Member -->|Yes| T3
+    Member -->|Yes| T5
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 6 -->
+            <div id="diagram6" class="diagram-section">
+                <h2>6. Complete System Architecture</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Shows the complete technical stack from client to database.</p>
+                    <h3>Layers</h3>
+                    <ul>
+                        <li>Client Layer - Web/Mobile/API clients</li>
+                        <li>API Gateway - Single entry point (api.php)</li>
+                        <li>Authentication - JWT token verification</li>
+                        <li>Authorization - RBAC permission checks</li>
+                        <li>Business Logic - Core functionality</li>
+                        <li>Data Access - PDO database queries</li>
+                        <li>Database - MySQL storage</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+graph TB
+    Client[Web/Mobile Client]
+    Gateway[API Gateway]
+    Auth[JWT Verification]
+    RBAC[Access Control]
+    BL[Business Logic]
+    DAL[Data Access]
+    DB[(MySQL Database)]
+    
+    Client -->|Request| Gateway
+    Gateway -->|Protected| Auth
+    Auth -->|Valid| RBAC
+    RBAC -->|Authorized| BL
+    BL --> DAL
+    DAL --> DB
+    DB -->|Results| DAL
+    DAL -->|Response| Gateway
+    Gateway -->|JSON| Client
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 7 -->
+            <div id="diagram7" class="diagram-section">
+                <h2>7. Real-World Data Flow Example</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Practical example showing a developer's journey through the system.</p>
+                    <h3>Steps</h3>
+                    <ul>
+                        <li>Developer logs in and receives JWT token</li>
+                        <li>Gets list of assigned tasks only</li>
+                        <li>Selects a task to update</li>
+                        <li>System validates: token, task ownership, update fields</li>
+                        <li>Successfully updates task status</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+graph TD
+    Start([Developer Login])
+    Login[POST /login]
+    GetToken[Receive Token]
+    GetTasks[GET /tasks]
+    CheckAuth{Verify Token}
+    FilterTasks[Filter Tasks]
+    Display[Display Tasks]
+    UpdateTask[PUT /tasks/1]
+    CheckOwner{Is Assigned?}
+    UpdateDB[Update Status]
+    Success[Success]
+    End([Complete])
+    
+    Start --> Login
+    Login --> GetToken
+    GetToken --> GetTasks
+    GetTasks --> CheckAuth
+    CheckAuth -->|Valid| FilterTasks
+    FilterTasks --> Display
+    Display --> UpdateTask
+    UpdateTask --> CheckOwner
+    CheckOwner -->|Yes| UpdateDB
+    UpdateDB --> Success
+    Success --> End
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Diagram 8 -->
+            <div id="diagram8" class="diagram-section">
+                <h2>8. Project Lifecycle States</h2>
+                <div class="diagram-description">
+                    <h3>Purpose</h3>
+                    <p>Shows the complete journey of a project from creation to archive.</p>
+                    <h3>Phases</h3>
+                    <ul>
+                        <li>Creation - Project Manager creates new project</li>
+                        <li>Team Building - Add members with specific roles</li>
+                        <li>Planning - Create and assign tasks</li>
+                        <li>Development - Team works on tasks (pending → in progress → completed)</li>
+                        <li>Closure - Mark project as completed/archived</li>
+                        <li>Monitoring - Ongoing tracking (parallel process)</li>
+                    </ul>
+                </div>
+                <div class="diagram-wrapper">
+                    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Registration
+    Registration --> CreateProject
+    CreateProject --> ActiveProject
+    ActiveProject --> AddMembers
+    AddMembers --> CreateTasks
+    CreateTasks --> Development
+    
+    state Development {
+        Pending --> InProgress
+        InProgress --> Completed
+        InProgress --> Cancelled
+    }
+    
+    Development --> ProjectComplete
+    ProjectComplete --> Archived
+    Archived --> [*]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <h3>Project Management System Documentation</h3>
+            <p>REST API with Role-Based Access Control</p>
+            <p style="margin-top: 10px; opacity: 0.8;">
+                API Base: https://limegreen-wren-873008.hostingersite.com/api.php
+            </p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Last Updated: September 30, 2025 | Version 1.0
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#667eea',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#764ba2',
+                lineColor: '#667eea',
+                secondaryColor: '#f8f9fa',
+                tertiaryColor: '#e9ecef'
+            }
+        });
+    </script>
+</body>
+</html>

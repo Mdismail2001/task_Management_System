@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
+import { User } from "lucide-react";
 import {
   ClipboardList,
   CheckCircle,
@@ -231,17 +232,24 @@ const MainContainer2 = () => {
               {uniqueUsers.map((usr, index) => (
                 <div
                   key={index}
-                  className="flex flex-col bg-gray-50 border border-gray-100 p-3 rounded-xl hover:bg-gray-100 transition"
+                  className="flex items-center justify-between bg-gray-50 border border-gray-100 p-3 rounded-xl hover:bg-gray-100 transition"
                 >
-                  <span className="font-semibold text-gray-800">
-                    {usr.fullname}
-                  </span>
-                  <span className="text-sm text-gray-500">{usr.email}</span>
+                  <div>
+                    <span className="font-semibold text-gray-800 block">
+                      {usr.fullname}
+                    </span>
+                    <span className="text-sm text-gray-500">{usr.email}</span>
+                  </div>
+
+                  {/* 👤 User icon on the right */}
+                  <div className="text-blue-600 bg-blue-100 p-2 rounded-full">
+                    <User size={18} />
+                  </div>
                 </div>
               ))}
             </div>
           )}
-        </div>
+        </div>      
       </div>
     </div>
   );

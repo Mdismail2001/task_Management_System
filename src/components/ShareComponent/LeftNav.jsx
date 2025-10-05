@@ -28,9 +28,10 @@ const LeftNav = () => {
       : [
           { to: "/home/admin", label: "Overview", icon: MdOutlineGridView, exact: true },
           { to: "/home/admin/all-task", label: "Tasks", icon: FaTasks },
-          { to: "/home/admin/settings", label: "Settings", icon: FaCog },
           { to: "/home/admin/team", label: "Team", icon: FaUsers },
-          { to: "/home/admin/report", label: "Report", icon: FaChartBar },        ];
+          { to: "/home/admin/report", label: "Report", icon: FaChartBar },
+          { to: "/home/admin/settings", label: "Settings", icon: FaCog },
+          ];
 
   return (
     <div className="grid grid-cols-12 bg-white shadow-lg">
