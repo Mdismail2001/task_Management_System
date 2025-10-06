@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Banner = () => {
   const navigate = useNavigate();
+  const {user} = useContext(AuthContext)
   return (
     <div>
       <div className="px-6 ">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-          👋 Hi, Username
+          👋 Hi, {user.fullname}
         </h1>
         <p className="py-2">Welcome to our group</p>
       </div>

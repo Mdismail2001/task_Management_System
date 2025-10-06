@@ -48,8 +48,8 @@ const LeftNav = () => {
 
       {/* Navigation Section */}
       <div className="col-span-9 bg-white h-screen">
-        <div className="flex-1 mt-20 ml-5">
-          <h2 className="text-xl text-blue-900 font-bold py-2">My Space</h2>
+        <div className="flex-1 mt-19 ml-5">
+          <h2 className="text-2xl text-blue-900 font-bold py-2">My Space</h2>
           <p className="text-bold text-gray-500">
             Workspace: <span className="text-black">{user.role}</span> 
           </p>
