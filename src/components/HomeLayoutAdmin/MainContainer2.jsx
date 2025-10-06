@@ -125,7 +125,7 @@ const MainContainer2 = () => {
       {/* Header Section */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-bold text-blue-900">
             Welcome back, {user?.username || "Admin"} 👋
           </h1>
           <p className="text-gray-500">

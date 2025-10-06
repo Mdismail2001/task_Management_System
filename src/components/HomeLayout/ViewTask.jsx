@@ -6,6 +6,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 const ViewTask = () => {
   const [task, setTask] = useState(null);
   const [status, setStatus] = useState("");
+  const [answer, setAnswer] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const { token } = useContext(AuthContext);
@@ -30,6 +31,7 @@ const ViewTask = () => {
         if (data?.data) {
           setTask(data.data);
           setStatus(data.data.status || "pending");
+          setAnswer(data.data.answer || "");
         }
       } catch (err) {
         console.error("Error fetching task:", err);
@@ -50,14 +52,14 @@ const ViewTask = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify({ status, answer }),
         }
       );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      await res.json();
 
-      alert("✅ Task status updated successfully!");
+      alert("✅ Task updated successfully!");
       navigate(-1);
     } catch (err) {
       console.error("Error updating task:", err);
@@ -67,8 +69,8 @@ const ViewTask = () => {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="relative max-w-lg w-full bg-white rounded-2xl shadow-2xl p-8 animate-fadeIn">
-        {/* Close button */}
+      <div className="relative max-w-md w-full bg-white rounded-2xl shadow-2xl p-6 animate-fadeIn max-h-[85vh] overflow-y-auto">
+        {/* Close Button */}
         <button
           onClick={() => navigate(-1)}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition"
@@ -84,7 +86,7 @@ const ViewTask = () => {
             </h2>
 
             {/* Task Details */}
-            <div className="bg-gray-50 p-4 rounded-xl mb-6 border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-xl mb-5 border border-gray-200">
               <p className="text-gray-600 mb-2">
                 <span className="font-semibold">Task ID:</span> {task.id}
               </p>
@@ -102,16 +104,17 @@ const ViewTask = () => {
               </p>
               <div className="text-gray-700 mt-3">
                 <span className="font-semibold">Description:</span>
-                <p className="text-gray-600 mt-1 bg-white border border-gray-200 rounded-lg p-3">
+                <p className="text-gray-600 mt-1 bg-white border border-gray-200 rounded-lg p-3 text-sm leading-relaxed">
                   {task.description || "No description provided."}
                 </p>
               </div>
             </div>
 
-            {/* Status Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Form Section */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Status Dropdown */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Update Status
                 </label>
                 <select
@@ -125,6 +128,21 @@ const ViewTask = () => {
                 </select>
               </div>
 
+              {/* Answer Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Answer / Response
+                </label>
+                <textarea
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  placeholder="Write your response or update notes here..."
+                  rows="3"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm"
+                ></textarea>
+              </div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full bg-[rgb(55,85,219)] text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium shadow-md"

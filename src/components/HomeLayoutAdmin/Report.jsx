@@ -26,7 +26,7 @@ const Report = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Project Reports</h1>
+          <h1 className="text-3xl font-bold text-blue-900">Project Reports</h1>
           <p className="text-gray-500 text-sm mt-1">
             Visual overview of all ongoing projects and their progress
           </p>

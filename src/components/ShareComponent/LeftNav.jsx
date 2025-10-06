@@ -31,7 +31,7 @@ const LeftNav = () => {
           { to: "/home/admin/team", label: "Team", icon: FaUsers },
           { to: "/home/admin/report", label: "Report", icon: FaChartBar },
           { to: "/home/admin/settings", label: "Settings", icon: FaCog },
-          ];
+                ];
 
   return (
     <div className="grid grid-cols-12 bg-white shadow-lg">
@@ -39,9 +39,9 @@ const LeftNav = () => {
       <div className="col-span-3 bg-[#3755db] h-screen flex justify-center">
         <div className="border-2 border-[#fabc37] items-center rounded-lg mt-20 p-1 inline-flex h-10 w-10">
           <img
-            src="/src/assets/images/WhatsApp Image 2025-09-18 at 2.44.32 AM.jpeg"
+            src="/src/assets/images/task.png"
             alt="Profile"
-            className="w-7 h-7 object-cover rounded-sm"
+            className="w-7 h-7 object-cover rounded-sm bg-white"
           />
         </div>
       </div>

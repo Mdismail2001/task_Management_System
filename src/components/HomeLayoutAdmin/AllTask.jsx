@@ -129,7 +129,7 @@ const AllTask = () => {
       {/* Header */}
       <div className="mb-6 flex justify-between items-start">
         <div>
-          <h1 className="text-2xl text-blue-900 font-bold">Tasks</h1>
+          <h1 className="text-3xl text-blue-900 font-bold">Tasks</h1>
           <p className="text-gray-600">Your tasks in your space.</p>
         </div>
         <button
