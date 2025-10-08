@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom"; // ✅ useNavigate from react-router-dom
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +18,7 @@ const RegisterPage = () => {
 
     const formData = new FormData(e.target);
     const data = {
-      fullname: formData.get("fullName"), // ✅ match API body (fullname, not fullName)
+      fullname: formData.get("fullName"),
       email: formData.get("email"),
       password: formData.get("password"),
       role: role,
@@ -35,10 +35,8 @@ const RegisterPage = () => {
       );
 
       const result = await res.json();
-      // console.log("API Response:", result);
 
       if (res.ok) {
-        // ✅ navigate to login on success
         navigate("/auth/login");
       } else {
         setError(result.message || "Registration failed");
@@ -60,21 +58,16 @@ const RegisterPage = () => {
           style={{ backgroundImage: "url('/src/assets/images/Frame 23.png')" }}
         ></div>
         <div className="absolute inset-0 bg-black/30"></div>
+
+        {/* Centered Text */}
         <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
           <h2 className="text-3xl font-bold max-w-sm">
             Join us and unlock new possibilities.
           </h2>
         </div>
+
+        {/* Copyright */}
         <div className="relative z-10 w-full text-center space-y-2">
-          <p className="text-sm">Get the Mobile App</p>
-          <div className="flex justify-center gap-4">
-            <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
-              Download
-            </button>
-            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100">
-              Download
-            </button>
-          </div>
           <p className="mt-4 text-xs">Copyright 2021 | All Rights Reserved</p>
         </div>
       </div>
@@ -185,7 +178,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+              className="w-full bg-[#3755db] text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50"
             >
               {loading ? "Registering..." : "Sign Up"}
             </button>

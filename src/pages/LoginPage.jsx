@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/Provider/AuthProvider";
 
 const LoginPage = () => {
@@ -8,7 +8,7 @@ const LoginPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); //  get login from context
+  const { login } = useContext(AuthContext); // get login from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,7 +39,6 @@ const LoginPage = () => {
       login(data.user, data.token);
       setSuccessMsg("Login successful! Redirecting...");
 
-      // if user is admin -> check if tasks exist
       if (data.user.role === "admin") {
         const taskRes = await fetch(
           `https://limegreen-wren-873008.hostingersite.com/api.php?endpoint=tasks&assigned_to_user_id=${data.user.id}`,
@@ -60,9 +59,8 @@ const LoginPage = () => {
           } else {
             navigate("/home/admin");
           }
-        }, 1000); // wait a bit so user sees success message
+        }, 1000);
       } else {
-        // normal user
         setTimeout(() => {
           navigate("/home/user");
         }, 1000);
@@ -107,7 +105,7 @@ const LoginPage = () => {
               />
             </div>
 
-            {/* Password with Eye Icon */}
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium mb-1">
                 Enter Your Password
@@ -144,7 +142,7 @@ const LoginPage = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              className="w-full bg-[#3755db] text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition"
             >
               Log In
             </button>
@@ -152,7 +150,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* Right Side - Rotated Background Image */}
+      {/* Right Side - Background Image */}
       <div className="col-span-12 lg:col-span-6 relative flex flex-col justify-between items-center text-white p-8 overflow-hidden">
         {/* Rotated background */}
         <div
@@ -165,16 +163,6 @@ const LoginPage = () => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/30"></div>
 
-        {/* Create Account Button */}
-        <div className="absolute top-6 right-6 z-10">
-          <Link
-            to="/auth/register"
-            className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium shadow hover:bg-gray-100"
-          >
-            Create Account
-          </Link>
-        </div>
-
         {/* Centered Text */}
         <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
           <h2 className="text-3xl font-bold max-w-sm">
@@ -182,17 +170,8 @@ const LoginPage = () => {
           </h2>
         </div>
 
-        {/* Mobile App Buttons */}
+        {/* Copyright */}
         <div className="relative z-10 w-full text-center space-y-2">
-          <p className="text-sm">Get the Mobile App</p>
-          <div className="flex justify-center gap-4">
-            <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600">
-              Download
-            </button>
-            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100">
-              Download
-            </button>
-          </div>
           <p className="mt-4 text-xs">Copyright 2021 | All Rights Reserved</p>
         </div>
       </div>
